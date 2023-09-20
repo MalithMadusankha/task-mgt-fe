@@ -89,16 +89,15 @@ export default class CreateCustomer extends Component {
 
     console.log(Customer);
 
-    // axios
-    //   .post("http://localhost:5000/Customer/add", Customer)
-    //   .then((res) => console.log(res.data));
-
-    // window.location = '/create';
+    axios
+      .post("http://localhost:5000/Customer/add", Customer)
+      .then((res) => console.log(res.data))
+      .then(() => alert("Success Fully added "));
   }
 
   render() {
     return (
-      <div>
+      <div className="container mb-5">
         <h3> New Customer </h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group" style={{ marginBottom: "15px" }}>

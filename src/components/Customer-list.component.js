@@ -5,12 +5,12 @@ import { Button } from "react-bootstrap";
 
 const Customer = (props) => (
   <tr>
-    <td> {props.Customer.Cid} </td> <td> {props.Customer.username} </td>{" "}
-    <td> {props.Customer.Address} </td> <td> {props.Customer.Phone} </td>{" "}
+    <td> {props.Customer.Cid} </td> <td> {props.Customer.username} </td>
+    <td> {props.Customer.Address} </td> <td> {props.Customer.Phone} </td>
     <td> {props.Customer.birthday.substring(0, 10)} </td>
     <td> {props.Customer.Email} </td>
     <td>
-      <Link to={"/edit/" + props.Customer._id}> Edit </Link> |{" "}
+      <Link to={"/edit/" + props.Customer._id}> Edit </Link> |
       <a
         href=" "
         onClick={() => {
@@ -19,7 +19,7 @@ const Customer = (props) => (
       >
         Delete
       </a>
-    </td>{" "}
+    </td>
   </tr>
 );
 
@@ -90,8 +90,12 @@ export default class CustomerList extends Component {
 
     axios.get("http://localhost:5000/Customer/").then((response) => {
       const resultt = response.data;
-      const result = resultt.filter((props) =>
-        props.username.includes(searchKey)
+      const result = resultt.filter(
+        (props) =>
+          props.username.includes(searchKey) ||
+          props.Cid.includes(searchKey) ||
+          props.Address.includes(searchKey) ||
+          props.Email.includes(searchKey)
       );
 
       this.setState({ Customer: result });
@@ -100,14 +104,13 @@ export default class CustomerList extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="m-3">
         <div className="row">
           <div className="col-lg-9 mt-2 mb-2">
             <b>
-              {" "}
-              <h4> Customer List </h4>{" "}
-            </b>{" "}
-          </div>{" "}
+              <h4> Customer List </h4>
+            </b>
+          </div>
           <div className="col-lg-3 mt-2 mb-2">
             <input
               className="form-control"
@@ -115,36 +118,34 @@ export default class CustomerList extends Component {
               placeholder="Search"
               name="searchQuery"
               onChange={this.handleSearchArea}
-            ></input>{" "}
-          </div>{" "}
+            ></input>
+          </div>
         </div>
 
         <table className="table">
           <thead className="thead-light">
             <tr>
-              <th> Cid </th> <th> Customer Name </th> <th> Address </th>{" "}
-              <th> Phone </th> <th> Birth Day </th> <th> Email </th>{" "}
-              <th> Actions </th>{" "}
-            </tr>{" "}
-          </thead>{" "}
+              <th> Cid </th> <th> Customer Name </th> <th> Address </th>
+              <th> Phone </th> <th> Birth Day </th> <th> Email </th>
+              <th> Actions </th>
+            </tr>
+          </thead>
           <tbody>
-            {" "}
             {this.state.Customer.map((props) => (
               <tr key={props.id}>
-                <td> {props.Cid} </td> <td> {props.username} </td>{" "}
-                <td> {props.Address} </td> <td> {props.Phone} </td>{" "}
-                <td> {props.birthday.substring(0, 10)} </td>{" "}
-                <td> {props.Email} </td>{" "}
+                <td> {props.Cid} </td> <td> {props.username} </td>
+                <td> {props.Address} </td> <td> {props.Phone} </td>
+                <td> {props.birthday.substring(0, 10)} </td>
+                <td> {props.Email} </td>
                 <td>
-                  <Link to={"/edit/" + props._id}> Edit </Link> |{" "}
-                  <a
-                    href=""
+                  <Link to={"/edit/" + props._id}> Edit </Link> |
+                  <button
                     onClick={() => {
                       this.deleteCustomer(props._id);
                     }}
                   >
                     Delete
-                  </a>{" "}
+                  </button>
                 </td>
               </tr>
             ))}
