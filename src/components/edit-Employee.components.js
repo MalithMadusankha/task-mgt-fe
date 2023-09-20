@@ -1,231 +1,185 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useParams } from "react-router-dom";
 
-export default class EditETask extends Component {
-  constructor(props) {
-    super(props);
+export default function EditETask() {
+  const { id } = useParams();
+  const [Eid, setEid] = useState("");
+  const [username, setusername] = useState("");
+  const [Address, setAddress] = useState("");
+  const [Phone, setPhone] = useState("");
+  const [birthday, setbirthday] = useState("");
+  const [Position, setPosition] = useState("");
+  const [Gender, setGender] = useState("");
 
-    this.onChangeEid = this.onChangeEid.bind(this);
-    this.onChangeusername = this.onChangeusername.bind(this);
-    this.onChangeAddress = this.onChangeAddress.bind(this);
-    this.onChangePhone = this.onChangePhone.bind(this);
-    this.onChangebirthday = this.onChangebirthday.bind(this);
-    this.onChangePosition = this.onChangePosition.bind(this);
-    this.onChangeGender = this.onChangeGender.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-
-    this.state = {
-      Eid: "",
-      username: "",
-      Address: "",
-      Phone: "",
-      birthday: "",
-      Position: "",
-      Gender: "",
-      Employee: [],
-    };
-  }
-
-  componentDidMount() {
+  const getEmployee = () => {
     axios
-      .get("http://localhost:5000/Employee/" + this.props.match.params.id)
+      .get("http://localhost:5000/Employee/" + id)
       .then((response) => {
-        this.setState({
-          Eid: response.data.Eid,
-          username: response.data.username,
-          Address: response.data.Address,
-          birthday: new Date(response.data.birthday),
-          Phone: response.data.Phone,
-          Position: response.data.Position,
-          Gender: response.data.Gender,
-        });
+        setEid(response.data.Eid);
+        setusername(response.data.username);
+        setAddress(response.data.Address);
+        setPhone(response.data.Phone);
+        setPosition(response.data.Position);
+        setGender(response.data.Gender);
+        setbirthday(new Date(response.data.birthday));
       })
       .catch(function (error) {
         console.log(error);
       });
-
-    axios
-      .get("http://localhost:5000/Employee/")
-      .then((response) => {
-        if (response.data.length > 0) {
-          this.setState({
-            Task: response.data.map((Task) => Task.Taskname),
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  };
 
   //set the Eid
 
-  onChangeEid(e) {
-    this.setState({
-      Eid: e.target.value,
-    });
-  }
+  const onChangeEid = (e) => {
+    setEid(e.target.value);
+  };
 
   //set the username
 
-  onChangeusername(e) {
-    this.setState({
-      username: e.target.value,
-    });
-  }
+  const onChangeusername = (e) => {
+    setusername(e.target.value);
+  };
   //set Address
-  onChangeAddress(e) {
-    this.setState({
-      Address: e.target.value,
-    });
-  }
+  const onChangeAddress = (e) => {
+    setAddress(e.target.value);
+  };
 
   //set Phone
 
-  onChangePhone(e) {
-    this.setState({
-      Phone: e.target.value,
-    });
-  }
+  const onChangePhone = (e) => {
+    setPhone(e.target.value);
+  };
   //Set birthday
 
-  onChangebirthday(date) {
-    this.setState({
-      birthday: date,
-    });
-  }
-
+  const onChangebirthday = (date) => {
+    setbirthday(date);
+  };
   //set Position
-  onChangePosition(e) {
-    this.setState({
-      Position: e.target.value,
-    });
-  }
+  const onChangePosition = (e) => {
+    setPosition(e.target.value);
+  };
 
   //set Gender
-  onChangeGender(e) {
-    this.setState({
-      Gender: e.target.value,
-    });
-  }
+  const onChangeGender = (e) => {
+    setGender(e.target.value);
+  };
 
-  onSubmit(e) {
+  const onSubmit = (e) => {
     e.preventDefault();
 
     const Employee = {
-      Eid: this.state.Eid,
-      username: this.state.username,
-      Address: this.state.Address,
-      Phone: this.state.Phone,
-      birthday: this.state.birthday,
-      Position: this.state.Position,
-      Gender: this.state.Gender,
+      Eid: Eid,
+      username: username,
+      Address: Address,
+      Phone: Phone,
+      birthday: birthday,
+      Position: Position,
+      Gender: Gender,
     };
 
     console.log(Employee);
 
-    // axios
-    //   .post(
-    //     "http://localhost:5000/Employee/update/" + this.props.match.params.id,
-    //     Employee
-    //   )
-    //   .then((res) => console.log(res.data));
-  }
+    axios
+      .post("http://localhost:5000/Employee/update/" + id, Employee)
+      .then((res) => {
+        console.log(res.data);
+        alert("Updated Successfully");
+      });
+  };
+  useEffect(() => {
+    getEmployee();
+  }, []);
 
-  render() {
-    return (
-      <div>
-        <h3> Update Employee </h3>{" "}
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group" style={{ marginBottom: "15px" }}>
-            <label style={{ marginBottom: "5px" }}> Employee Code </label>{" "}
-            <input
-              type="text"
-              required
-              className="form-control"
-              name="Employee Code "
-              placeholder="Employee Code"
-              value={this.state.Eid}
-              onChange={this.onChangeEid}
-            />{" "}
+  return (
+    <div className="container mb-5">
+      <h3> Update Employee </h3>
+      <form onSubmit={onSubmit}>
+        <div className="form-group" style={{ marginBottom: "15px" }}>
+          <label style={{ marginBottom: "5px" }}> Employee Code </label>
+          <input
+            type="text"
+            required
+            className="form-control"
+            name="Employee Code "
+            placeholder="Employee Code"
+            value={Eid}
+            onChange={onChangeEid}
+          />
+        </div>
+        <div className="form-group">
+          <label> User Name: </label>
+          <input
+            type="text"
+            required
+            className="form-control"
+            name="User Name"
+            placeholder="Enter User Name"
+            value={username}
+            onChange={onChangeusername}
+          />
+        </div>
+        <div className="form-group">
+          <label> Address: </label>
+          <input
+            type="text"
+            required
+            className="form-control"
+            name="Address"
+            placeholder="Enter Address"
+            value={Address}
+            onChange={onChangeAddress}
+          />
+        </div>
+        <div className="form-group">
+          <label> Phone: </label>
+          <input
+            type="text"
+            required
+            className="form-control"
+            maxlength="10"
+            name="Phone"
+            placeholder="Enter Phone"
+            value={Phone}
+            onChange={onChangePhone}
+          />
+        </div>
+        <div className="form-group">
+          <label> Birthday: </label>
+          <div>
+            <DatePicker selected={birthday} onChange={onChangebirthday} />
           </div>
-          <div className="form-group">
-            <label> User Name: </label>{" "}
-            <input
-              type="text"
-              required
-              className="form-control"
-              name="User Name"
-              placeholder="Enter User Name"
-              value={this.state.username}
-              onChange={this.onChangeusername}
-            />{" "}
-          </div>{" "}
-          <div className="form-group">
-            <label> Address: </label>{" "}
-            <input
-              type="text"
-              required
-              className="form-control"
-              name="Address"
-              placeholder="Enter Address"
-              value={this.state.Address}
-              onChange={this.onChangeAddress}
-            />{" "}
-          </div>
-          <div className="form-group">
-            <label> Phone: </label>{" "}
-            <input
-              type="text"
-              required
-              className="form-control"
-              maxlength="10"
-              name="Phone"
-              placeholder="Enter Phone"
-              value={this.state.Phone}
-              onChange={this.onChangePhone}
-            />{" "}
-          </div>
-          <div className="form-group">
-            <label> Birthday: </label>{" "}
-            <div>
-              <DatePicker
-                selected={this.state.birthday}
-                onChange={this.onChangebirthday}
-              />{" "}
-            </div>
-          </div>
-          <div className="form-group">
-            <label> Position: </label>{" "}
-            <input
-              type="text"
-              required
-              className="form-control"
-              name="Position"
-              placeholder="Enter Position"
-              value={this.state.Position}
-              onChange={this.onChangePosition}
-            />{" "}
-          </div>
-          <div className="form-group">
-            <label> Gender: </label>{" "}
-            <input
-              type="text"
-              required
-              className="form-control"
-              name="Gender"
-              placeholder="Enter Gender"
-              value={this.state.Gender}
-              onChange={this.onChangeGender}
-            />{" "}
-          </div>
-          <div className="form-group">
-            <input type="submit" value="Update" className="btn btn-primary" />
-          </div>{" "}
-        </form>{" "}
-      </div>
-    );
-  }
+        </div>
+        <div className="form-group">
+          <label> Position: </label>
+          <input
+            type="text"
+            required
+            className="form-control"
+            name="Position"
+            placeholder="Enter Position"
+            value={Position}
+            onChange={onChangePosition}
+          />
+        </div>
+        <div className="form-group">
+          <label> Gender: </label>
+          <input
+            type="text"
+            required
+            className="form-control"
+            name="Gender"
+            placeholder="Enter Gender"
+            value={Gender}
+            onChange={onChangeGender}
+          />
+        </div>
+        <div className="form-group">
+          <input type="submit" value="Update" className="btn btn-primary" />
+        </div>
+      </form>
+    </div>
+  );
 }

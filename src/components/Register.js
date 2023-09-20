@@ -155,20 +155,6 @@ export default function CustomerRegister() {
             />
           </div>
 
-          <div style={{ display: "flex" }} className="col-md-10 mb-3">
-            <div className="col-md-7 mb-1">
-              <input
-                type="file"
-                accept="image/png, image/jpeg"
-                id="image1"
-                required
-                onChange={(e) => {
-                  setImg1(e.target.value);
-                }}
-              />{" "}
-            </div>
-          </div>
-
           <hr className="col-md-10 mb-3" />
 
           <div className="form-check">

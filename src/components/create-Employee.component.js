@@ -97,18 +97,19 @@ export default class CreateEmployee extends Component {
 
     console.log(Employee);
 
-    // axios
-    //   .post("http://localhost:5000/Employee/add", Employee)
-    //   .then((res) => console.log(res.data));
+    axios.post("http://localhost:5000/Employee/add", Employee).then((res) => {
+      console.log(res.data);
+      alert("Success fully Add New employee");
+    });
   }
 
   render() {
     return (
-      <div>
-        <h3> New Employee </h3>{" "}
+      <div className="container mb-5">
+        <h3> New Employee </h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group" style={{ marginBottom: "15px" }}>
-            <label style={{ marginBottom: "5px" }}> Employee Code </label>{" "}
+            <label style={{ marginBottom: "5px" }}> Employee Code </label>
             <input
               type="text"
               required
@@ -117,10 +118,10 @@ export default class CreateEmployee extends Component {
               placeholder="Employee Code"
               value={this.state.Eid}
               onChange={this.onChangeEid}
-            />{" "}
+            />
           </div>
           <div className="form-group">
-            <label> User Name: </label>{" "}
+            <label> User Name: </label>
             <input
               type="text"
               required
@@ -129,10 +130,10 @@ export default class CreateEmployee extends Component {
               placeholder="Enter User Name"
               value={this.state.username}
               onChange={this.onChangeusername}
-            />{" "}
-          </div>{" "}
+            />
+          </div>
           <div className="form-group">
-            <label> Address: </label>{" "}
+            <label> Address: </label>
             <input
               type="text"
               required
@@ -141,10 +142,10 @@ export default class CreateEmployee extends Component {
               placeholder="Enter Address"
               value={this.state.Address}
               onChange={this.onChangeAddress}
-            />{" "}
+            />
           </div>
           <div className="form-group">
-            <label> Phone: </label>{" "}
+            <label> Phone: </label>
             <input
               type="text"
               required
@@ -154,19 +155,19 @@ export default class CreateEmployee extends Component {
               placeholder="Enter Phone"
               value={this.state.Phone}
               onChange={this.onChangePhone}
-            />{" "}
+            />
           </div>
           <div className="form-group">
-            <label> Birthday: </label>{" "}
+            <label> Birthday: </label>
             <div>
               <DatePicker
                 selected={this.state.birthday}
                 onChange={this.onChangebirthday}
-              />{" "}
+              />
             </div>
           </div>
           <div className="form-group">
-            <label> Position: </label>{" "}
+            <label> Position: </label>
             <input
               type="text"
               required
@@ -175,10 +176,10 @@ export default class CreateEmployee extends Component {
               placeholder="Enter Position"
               value={this.state.Position}
               onChange={this.onChangePosition}
-            />{" "}
+            />
           </div>
           <div className="form-group">
-            <label> Gender: </label>{" "}
+            <label> Gender: </label>
             <input
               type="text"
               required
@@ -187,12 +188,12 @@ export default class CreateEmployee extends Component {
               placeholder="Enter Gender"
               value={this.state.Gender}
               onChange={this.onChangeGender}
-            />{" "}
+            />
           </div>
           <div className="form-group">
             <input type="submit" value="Create" className="btn btn-primary" />
-          </div>{" "}
-        </form>{" "}
+          </div>
+        </form>
       </div>
     );
   }

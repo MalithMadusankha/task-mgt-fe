@@ -88,14 +88,15 @@ export default class CreateTask extends Component {
 
     console.log(Task);
 
-    // axios
-    //   .post("http://localhost:5000/Task/add", Task)
-    //   .then((res) => console.log(res.data));
+    axios.post("http://localhost:5000/Task/add", Task).then((res) => {
+      console.log(res.data);
+      alert("Task Created");
+    });
   }
 
   render() {
     return (
-      <div>
+      <div className="container mb-5">
         <h3> New Task </h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group" style={{ marginBottom: "15px" }}>
