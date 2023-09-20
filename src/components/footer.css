@@ -1,0 +1,152 @@
+.Container {
+    padding: 60px 40px;
+    background: #111111;
+}
+
+@media (max-width: 1000px) {
+    .Container {
+        padding: 10px 10px;
+    }
+}
+
+.Wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 1000px;
+    margin: 0 0;
+}
+
+h6, p {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: 10px;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+}
+
+.Row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 10px;
+    margin-block-end: 6px;
+}
+
+@media (max-width: 650px) {
+    .Row {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        color:#ffffff;
+    }
+}
+
+.Link {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 18px;
+    text-decoration: none;
+    hover
+
+{
+    color: #ffffff;
+    transition: 200ms ease-in;
+}
+
+}
+
+img {
+    //padding-left:20px;
+    width: 200px;
+    height: 150px;
+}
+
+.Title {
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.ftr-links-sub {
+    padding: 0;
+    margin: 0;
+    color:white;
+}
+
+    .ftr-links-sub:after {
+        display: table;
+        clear: both;
+        content: "";
+    }
+
+    .ftr-links-sub li {
+        display: block;
+        list-style-type: none;
+        margin: 0;
+        padding: 3px 0;
+        font: normal normal 12px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        /*width: 150px;*/
+    }
+
+footer-social {
+    text-align: center;
+}
+
+.photo{
+    height:20px;
+    width:20px;
+}
+
+.footer-social ul {
+    padding: 0;
+    display: inline-block;
+    list-style-type: none;
+}
+
+    .footer-social ul:after {
+        display: table;
+        clear: both;
+        content: "";
+    }
+
+.footer-social li {
+    float: left;
+    margin: 0 15px 0 0;
+    padding: 0;
+}
+
+@media only screen and (min-width: 768px) {
+    .footer-lists {
+        width: 100%;
+    }
+
+    .footer-email {
+        width: 50%;
+        float: left;
+        text-align: left;
+    }
+
+    .footer-social {
+        width: 45%;
+        margin-left: 5%;
+        float: left;
+        text-align: left;
+    }
+}
+
+@media only screen and (min-width: 1008px) {
+    .footer-lists {
+        width: 66.6666%;
+        float: left;
+    }
+
+    .footer-email {
+        width: 33.3333%;
+    }
+
+    .footer-social {
+        width: 33.3333%;
+        float: right;
+        margin-left: 0;
+    }
+}
