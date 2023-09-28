@@ -5,20 +5,26 @@ import { Button } from "react-bootstrap";
 
 const Customer = (props) => (
   <tr>
-    <td> {props.Customer.Cid} </td> <td> {props.Customer.username} </td>
-    <td> {props.Customer.Address} </td> <td> {props.Customer.Phone} </td>
+    <td> {props.Customer.userId} </td> <td> {props.Customer.username} </td>
+    <td> {props.Customer.address} </td> <td> {props.Customer.phone} </td>
     <td> {props.Customer.birthday.substring(0, 10)} </td>
-    <td> {props.Customer.Email} </td>
+    <td> {props.Customer.email} </td>
     <td>
-      <Link to={"/edit/" + props.Customer._id}> Edit </Link> |
-      <a
-        href=" "
+      <Link
+        className="btn btn-warning btn-sm mx-1"
+        to={"/edit/" + props.Customer._id}
+      >
+        Edit
+      </Link>
+      |
+      <button
+        className="btn btn-danger btn-sm mx-1"
         onClick={() => {
           props.deleteCustomer(props.exercise._id);
         }}
       >
         Delete
-      </a>
+      </button>
     </td>
   </tr>
 );
@@ -34,18 +40,7 @@ export default class CustomerList extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:5000/Customer/")
-      .then((response) => {
-        this.setState({ Customer: response.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  getPosts() {
-    axios
-      .get("http://localhost:5000/Customer/")
+      .get("http://localhost:5000/user/type/CUSTOMER")
       .then((response) => {
         this.setState({ Customer: response.data });
       })
@@ -56,7 +51,7 @@ export default class CustomerList extends Component {
 
   deleteCustomer(id) {
     if (window.confirm("Are you sure?")) {
-      axios.delete("http://localhost:5000/Customer/" + id).then((response) => {
+      axios.delete("http://localhost:5000/user/" + id).then((response) => {
         console.log(response.data);
       });
 
@@ -88,14 +83,14 @@ export default class CustomerList extends Component {
   handleSearchArea = (e) => {
     const searchKey = e.currentTarget.value;
 
-    axios.get("http://localhost:5000/Customer/").then((response) => {
+    axios.get("http://localhost:5000/user/type/CUSTOMER").then((response) => {
       const resultt = response.data;
       const result = resultt.filter(
         (props) =>
           props.username.includes(searchKey) ||
-          props.Cid.includes(searchKey) ||
-          props.Address.includes(searchKey) ||
-          props.Email.includes(searchKey)
+          props.userId.includes(searchKey) ||
+          props.address.includes(searchKey) ||
+          props.email.includes(searchKey)
       );
 
       this.setState({ Customer: result });
@@ -125,21 +120,33 @@ export default class CustomerList extends Component {
         <table className="table">
           <thead className="thead-light">
             <tr>
-              <th> Cid </th> <th> Customer Name </th> <th> Address </th>
-              <th> Phone </th> <th> Birth Day </th> <th> Email </th>
+              <th className="m-0 p-0"> Customer ID </th>
+              <th> Customer Name </th>
+              <th> Address </th>
+              <th> Phone </th>
+              <th> Birth Day </th>
+              <th> Email </th>
               <th> Actions </th>
             </tr>
           </thead>
           <tbody>
             {this.state.Customer.map((props) => (
               <tr key={props.id}>
-                <td> {props.Cid} </td> <td> {props.username} </td>
-                <td> {props.Address} </td> <td> {props.Phone} </td>
+                <td className="m-0 p-0"> {props.userId} </td>
+                <td> {props.username} </td>
+                <td> {props.address} </td>
+                <td> {props.phone} </td>
                 <td> {props.birthday.substring(0, 10)} </td>
-                <td> {props.Email} </td>
+                <td> {props.email} </td>
                 <td>
-                  <Link to={"/edit/" + props._id}> Edit </Link> |
+                  <Link
+                    className="btn btn-warning btn-sm mx-1"
+                    to={"/edit/" + props._id}
+                  >
+                    Edit
+                  </Link>
                   <button
+                    className="btn btn-danger btn-sm mx-1"
                     onClick={() => {
                       this.deleteCustomer(props._id);
                     }}
@@ -151,7 +158,7 @@ export default class CustomerList extends Component {
             ))}
           </tbody>
           <br></br>
-          <Link to="/create">
+          <Link className="mx-3" to="/create">
             <Button variant="primary">New Customer </Button>
           </Link>
           <Link to="/ReportCus">

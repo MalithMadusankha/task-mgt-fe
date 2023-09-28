@@ -18,13 +18,16 @@ export default class CreateCustomer extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      Cid: "",
+      email: "",
+      firebaseId: "",
+      type: "CUSTOMER",
+      userId: "",
       username: "",
-      Address: "",
-      Phone: "",
+      address: "",
+      phone: "",
       birthday: "",
-      Email: "",
-      Customer: [],
+      position: "",
+      gender: "",
     };
   }
 
@@ -32,7 +35,7 @@ export default class CreateCustomer extends Component {
 
   onChangeCid(e) {
     this.setState({
-      Cid: e.target.value,
+      userId: e.target.value,
     });
   }
 
@@ -46,7 +49,7 @@ export default class CreateCustomer extends Component {
   //set Address
   onChangeAddress(e) {
     this.setState({
-      Address: e.target.value,
+      address: e.target.value,
     });
   }
 
@@ -54,7 +57,7 @@ export default class CreateCustomer extends Component {
 
   onChangePhone(e) {
     this.setState({
-      Phone: e.target.value,
+      phone: e.target.value,
     });
   }
   //Set birthday
@@ -68,7 +71,7 @@ export default class CreateCustomer extends Component {
   //set Email
   onChangeEmail(e) {
     this.setState({
-      Email: e.target.value,
+      email: e.target.value,
       //     if (.isEmail(Email)) {
     });
   }
@@ -79,18 +82,22 @@ export default class CreateCustomer extends Component {
     e.preventDefault();
 
     const Customer = {
-      Cid: this.state.Cid,
+      email: this.state.email,
+      firebaseId: this.state.firebaseId,
+      type: this.state.type,
+      userId: this.state.userId,
       username: this.state.username,
-      Address: this.state.Address,
-      Phone: this.state.Phone,
+      address: this.state.address,
+      phone: this.state.phone,
       birthday: this.state.birthday,
-      Email: this.state.Email,
+      position: this.state.position,
+      gender: this.state.gender,
     };
 
     console.log(Customer);
 
     axios
-      .post("http://localhost:5000/Customer/add", Customer)
+      .post("http://localhost:5000/user/add", Customer)
       .then((res) => console.log(res.data))
       .then(() => alert("Success Fully added "));
   }
@@ -101,16 +108,16 @@ export default class CreateCustomer extends Component {
         <h3> New Customer </h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group" style={{ marginBottom: "15px" }}>
-            <label style={{ marginBottom: "5px" }}> Customer Code </label>{" "}
+            <label style={{ marginBottom: "5px" }}> Customer Code </label>
             <input
               type="text"
               required
               className="form-control"
               name="Customer Code "
               placeholder="Customer Code"
-              value={this.state.Cid}
+              value={this.state.userId}
               onChange={this.onChangeCid}
-            />{" "}
+            />
           </div>
           <div className="form-group">
             <label> User Name: </label>
@@ -133,13 +140,13 @@ export default class CreateCustomer extends Component {
               className="form-control"
               name="Address"
               placeholder="Enter Address"
-              value={this.state.Address}
+              value={this.state.address}
               onChange={this.onChangeAddress}
-            />{" "}
+            />
           </div>
 
           <div className="form-group">
-            <label> Phone: </label>{" "}
+            <label> Phone: </label>
             <input
               type="text"
               required
@@ -147,9 +154,9 @@ export default class CreateCustomer extends Component {
               maxlength="10"
               name="Phone"
               placeholder="Enter Phone"
-              value={this.state.Phone}
+              value={this.state.phone}
               onChange={this.onChangePhone}
-            />{" "}
+            />
           </div>
 
           <div className="form-group">
@@ -170,9 +177,9 @@ export default class CreateCustomer extends Component {
               className="form-control"
               name="Email"
               placeholder="Enter Email"
-              value={this.state.Email}
+              value={this.state.email}
               onChange={this.onChangeEmail}
-            />{" "}
+            />
           </div>
 
           <div className="form-group">

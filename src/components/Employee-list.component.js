@@ -5,20 +5,30 @@ import { Button } from "react-bootstrap";
 
 const Employee = (props) => (
   <tr>
-    <td> {props.Employee.Eid} </td> <td> {props.Employee.username} </td>
-    <td> {props.Employee.Address} </td> <td> {props.Employee.Phone} </td>
+    <td> {props.Employee.userId} </td>
+    <td> {props.Employee.username} </td>
+    <td> {props.Employee.address} </td>
+    <td> {props.Employee.phone} </td>
     <td> {props.Employee.birthday.substring(0, 10)} </td>
-    <td> {props.Employee.Position} </td> <td> {props.Employee.Gender} </td>
+    <td> {props.Employee.email} </td>
+    <td> {props.Employee.position} </td>
+    <td> {props.Employee.gender} </td>
     <td>
-      <Link to={"Employee/edit/" + props.Employee._id}> Edit </Link> |
-      <a
-        href=" "
+      <Link
+        className="btn btn-warning btn-sm mx-1"
+        to={"Employee/edit/" + props.Employee._id}
+      >
+        Edit
+      </Link>
+      |
+      <button
+        className="btn btn-danser btn-sm mx-1"
         onClick={() => {
           props.deleteEmployee(props.Employee._id);
         }}
       >
         Delete
-      </a>
+      </button>
     </td>
   </tr>
 );
@@ -34,19 +44,9 @@ export default class EmployeeList extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:5000/Employee/")
+      .get("http://localhost:5000/user/type/EMPLOYEE")
       .then((response) => {
-        this.setState({ Employee: response.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  getPosts() {
-    axios
-      .get("http://localhost:5000/Employee/")
-      .then((response) => {
+        console.log("emp :", response.data);
         this.setState({ Employee: response.data });
       })
       .catch((error) => {
@@ -56,7 +56,7 @@ export default class EmployeeList extends Component {
 
   deleteEmployee(id) {
     if (window.confirm("Are you sure?")) {
-      axios.delete("http://localhost:5000/Employee/" + id).then((response) => {
+      axios.delete("http://localhost:5000/user/" + id).then((response) => {
         console.log(response.data);
       });
 
@@ -67,7 +67,7 @@ export default class EmployeeList extends Component {
   }
 
   EmployeeList() {
-    return this.state.Employee.map((currentEmployee) => {
+    return this.state?.Employee?.map((currentEmployee) => {
       return (
         <Employee
           Employee={currentEmployee}
@@ -87,7 +87,7 @@ export default class EmployeeList extends Component {
   handleSearchArea = (e) => {
     const searchKey = e.currentTarget.value;
 
-    axios.get("http://localhost:5000/Employee/").then((response) => {
+    axios.get("http://localhost:5000/user/type/EMPLOYEE").then((response) => {
       const resultt = response.data;
       const result = resultt.filter((props) =>
         props.username.includes(searchKey)
@@ -99,7 +99,7 @@ export default class EmployeeList extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="m-3">
         <div className="row">
           <div className="col-lg-9 mt-2 mb-2">
             <h4> Employee List </h4>
@@ -123,40 +123,50 @@ export default class EmployeeList extends Component {
               <th> Gender </th> <th> Actions </th>
             </tr>
           </thead>
-          <tbody>
-            {this.state.Employee.map((props) => (
-              <tr key={props.id}>
-                <td> {props.Eid} </td> <td> {props.username} </td>
-                <td> {props.Address} </td> <td> {props.Phone} </td>
-                <td> {props.birthday.substring(0, 10)} </td>
-                <td> {props.Position} </td> <td> {props.Gender} </td>
-                <td>
-                  <Link to={"/EMP/Edit/" + props._id}> Edit </Link> |
-                  <button
-                    href=""
-                    onClick={() => {
-                      this.deleteEmployee(props._id);
-                    }}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          {this.state.Employee && this.state?.Employee.length > 0 ? (
+            <tbody>
+              {this.state?.Employee?.map((emp) => (
+                <tr key={emp?._id}>
+                  <td> {emp?.userId} </td>
+                  <td> {emp?.username} </td>
+                  <td> {emp?.address} </td>
+                  <td> {emp?.phone} </td>
+                  <td> {emp?.birthday.substring(0, 10)} </td>
+                  <td> {emp?.email} </td>
+                  <td> {emp?.position} </td>
+                  <td> {emp?.gender} </td>
+                  <td>
+                    <Link
+                      className="btn btn-warning btn-sm mx-1"
+                      to={"/EMP/Edit/" + emp._id}
+                    >
+                      Edit
+                    </Link>
+
+                    <button
+                      className="btn btn-danger btn-sm mx-1"
+                      onClick={() => {
+                        this.deleteEmployee(emp._id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          ) : null}
+
           <br></br>
-          <Link to="/Employee/add/">
+          <Link className="mx-3" to="/Employee/add/">
             <Button variant="primary">New Employee</Button>
           </Link>
-          <br></br>
-          <br></br>
+
           <Link to="/EmpReport">
             <Button variant="primary">Generate Report</Button>
           </Link>
           <br></br>
         </table>
-
-        <div style={{ float: "right" }}></div>
       </div>
     );
   }

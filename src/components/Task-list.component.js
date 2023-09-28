@@ -13,15 +13,21 @@ const Task = (props) => (
     <td> {props.Task.status} </td>
 
     <td>
-      <Link to={"/edit/" + props.Task._id}> Edit </Link> |
-      <a
-        href=" "
+      <Link
+        className="btn btn-warning btn-sm mx-1"
+        to={"/edit/" + props.Task._id}
+      >
+        Edit
+      </Link>
+      |
+      <button
+        className="btn btn-danger btn-sm mx-1"
         onClick={() => {
           props.deleteTask(props.Task._id);
         }}
       >
         Delete
-      </a>
+      </button>
     </td>
   </tr>
 );
@@ -143,9 +149,15 @@ export default class TaskList extends Component {
                 <td> {props.status} </td>
 
                 <td>
-                  <Link to={"/Taskedit/Edit/" + props._id}> Edit </Link> |
+                  <Link
+                    className="btn btn-warning btn-sm mx-1"
+                    to={"/Taskedit/Edit/" + props._id}
+                  >
+                    Edit
+                  </Link>
+
                   <button
-                    href=""
+                    className="btn btn-danger btn-sm mx-1"
                     onClick={() => {
                       this.deleteTask(props._id);
                     }}

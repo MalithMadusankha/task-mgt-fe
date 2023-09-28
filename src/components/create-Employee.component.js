@@ -16,16 +16,19 @@ export default class CreateEmployee extends Component {
     this.onChangePosition = this.onChangePosition.bind(this);
     this.onChangeGender = this.onChangeGender.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
 
     this.state = {
-      Eid: "",
+      email: "",
+      firebaseId: "",
+      type: "EMPLOYEE",
+      userId: "",
       username: "",
-      Address: "",
-      Phone: "",
+      address: "",
+      phone: "",
       birthday: "",
-      Position: "",
-      Gender: "",
-      Employee: [],
+      position: "",
+      gender: "",
     };
   }
 
@@ -33,7 +36,7 @@ export default class CreateEmployee extends Component {
 
   onChangeEid(e) {
     this.setState({
-      Eid: e.target.value,
+      userId: e.target.value,
     });
   }
 
@@ -47,7 +50,7 @@ export default class CreateEmployee extends Component {
   //set Address
   onChangeAddress(e) {
     this.setState({
-      Address: e.target.value,
+      address: e.target.value,
     });
   }
 
@@ -55,7 +58,7 @@ export default class CreateEmployee extends Component {
 
   onChangePhone(e) {
     this.setState({
-      Phone: e.target.value,
+      phone: e.target.value,
     });
   }
   //Set birthday
@@ -69,14 +72,22 @@ export default class CreateEmployee extends Component {
   //set Position
   onChangePosition(e) {
     this.setState({
-      Position: e.target.value,
+      position: e.target.value,
     });
   }
 
   //set Gender
   onChangeGender(e) {
     this.setState({
-      Gender: e.target.value,
+      gender: e.target.value,
+    });
+  }
+
+  //set Email
+  onChangeEmail(e) {
+    this.setState({
+      email: e.target.value,
+      //     if (.isEmail(Email)) {
     });
   }
 
@@ -86,18 +97,21 @@ export default class CreateEmployee extends Component {
     e.preventDefault();
 
     const Employee = {
-      Eid: this.state.Eid,
+      email: this.state.email,
+      firebaseId: this.state.firebaseId,
+      type: this.state.type,
+      userId: this.state.userId,
       username: this.state.username,
-      Address: this.state.Address,
-      Phone: this.state.Phone,
+      address: this.state.address,
+      phone: this.state.phone,
       birthday: this.state.birthday,
-      Position: this.state.Position,
-      Gender: this.state.Gender,
+      position: this.state.position,
+      gender: this.state.gender,
     };
 
     console.log(Employee);
 
-    axios.post("http://localhost:5000/Employee/add", Employee).then((res) => {
+    axios.post("http://localhost:5000/user/add", Employee).then((res) => {
       console.log(res.data);
       alert("Success fully Add New employee");
     });
@@ -116,7 +130,7 @@ export default class CreateEmployee extends Component {
               className="form-control"
               name="Employee Code "
               placeholder="Employee Code"
-              value={this.state.Eid}
+              value={this.state.userId}
               onChange={this.onChangeEid}
             />
           </div>
@@ -133,6 +147,18 @@ export default class CreateEmployee extends Component {
             />
           </div>
           <div className="form-group">
+            <label> Email: </label>
+            <input
+              type="text"
+              required
+              className="form-control"
+              name="Email"
+              placeholder="Enter Email"
+              value={this.state.email}
+              onChange={this.onChangeEmail}
+            />
+          </div>
+          <div className="form-group">
             <label> Address: </label>
             <input
               type="text"
@@ -140,7 +166,7 @@ export default class CreateEmployee extends Component {
               className="form-control"
               name="Address"
               placeholder="Enter Address"
-              value={this.state.Address}
+              value={this.state.address}
               onChange={this.onChangeAddress}
             />
           </div>
@@ -153,7 +179,7 @@ export default class CreateEmployee extends Component {
               maxlength="10"
               name="Phone"
               placeholder="Enter Phone"
-              value={this.state.Phone}
+              value={this.state.phone}
               onChange={this.onChangePhone}
             />
           </div>
@@ -174,7 +200,7 @@ export default class CreateEmployee extends Component {
               className="form-control"
               name="Position"
               placeholder="Enter Position"
-              value={this.state.Position}
+              value={this.state.position}
               onChange={this.onChangePosition}
             />
           </div>
@@ -186,7 +212,7 @@ export default class CreateEmployee extends Component {
               className="form-control"
               name="Gender"
               placeholder="Enter Gender"
-              value={this.state.Gender}
+              value={this.state.gender}
               onChange={this.onChangeGender}
             />
           </div>

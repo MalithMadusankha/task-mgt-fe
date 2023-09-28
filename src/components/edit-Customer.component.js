@@ -6,13 +6,17 @@ import { useParams } from "react-router-dom";
 
 export default function EditCustomer() {
   const { id } = useParams();
-  const [Cid, setCid] = useState("");
+  const [email, setemail] = useState("");
+  const [firebaseId, setfirebaseId] = useState("");
+  const [type, settype] = useState("");
+  const [userId, setuserId] = useState("");
   const [username, setusername] = useState("");
-  const [Address, setAddress] = useState("");
+  const [address, setaddress] = useState("");
+  const [phone, setphone] = useState("");
   const [birthday, setbirthday] = useState("");
-  const [selectDate, setselectDate] = useState("");
-  const [Phone, setPhone] = useState("");
-  const [Email, setEmail] = useState("");
+  const [position, setposition] = useState("");
+  const [gender, setgender] = useState("");
+
   useEffect(() => {
     getCustomer();
   }, []);
@@ -21,15 +25,19 @@ export default function EditCustomer() {
     // Check if params and id exist before making the request
     if (id) {
       axios
-        .get("http://localhost:5000/Customer/" + id)
+        .get("http://localhost:5000/user/" + id)
         .then((response) => {
           console.log("res ", response.data);
-          setCid(response.data.Cid);
+          setemail(response.data.email);
+          setfirebaseId(response.data.firebaseId);
+          settype(response.data.type);
+          setuserId(response.data.userId);
           setusername(response.data.username);
-          setAddress(response.data.Address);
-          setbirthday(response.data.birthday);
-          setPhone(response.data.Phone);
-          setEmail(response.data.Email);
+          setaddress(response.data.address);
+          setphone(response.data.phone);
+          setposition(response.data.position);
+          setgender(response.data.gender);
+          setbirthday(new Date(response.data.birthday));
         })
         .catch(function (error) {
           console.log(error);
@@ -42,42 +50,45 @@ export default function EditCustomer() {
   };
   //set Address
   const onChangeAddress = (e) => {
-    setAddress(e.target.value);
+    setaddress(e.target.value);
   };
 
   //set Phone
 
   const onChangePhone = (e) => {
-    setPhone(e.target.value);
+    setphone(e.target.value);
   };
   //Set birthday
 
   const onChangebirthday = (date) => {
-    console.log("date", date);
-    setselectDate(date);
+    setbirthday(date);
   };
 
   //set Email
   const onChangeEmail = (e) => {
-    setEmail(e.target.value);
+    setemail(e.target.value);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     const Customer = {
-      Cid: Cid,
-      username: username,
-      Address: Address,
-      Phone: Phone,
-      birthday: selectDate ? selectDate : birthday,
-      Email: Email,
+      email,
+      firebaseId,
+      type,
+      userId,
+      username,
+      address,
+      phone,
+      birthday,
+      position,
+      gender,
     };
 
     console.log(Customer);
 
     axios
-      .post("http://localhost:5000/Customer/update/" + id, Customer)
+      .post("http://localhost:5000/user/update/" + id, Customer)
       .then((res) => {
         console.log(res.data);
         alert("Successfully updated ");
@@ -97,7 +108,7 @@ export default function EditCustomer() {
             className="form-control"
             name="Customer Code "
             placeholder="Customer Code"
-            value={Cid}
+            value={userId}
             disabled
           />
         </div>
@@ -121,7 +132,7 @@ export default function EditCustomer() {
             className="form-control"
             name="Address"
             placeholder="Enter Address"
-            value={Address}
+            value={address}
             onChange={onChangeAddress}
           />
         </div>
@@ -135,15 +146,15 @@ export default function EditCustomer() {
             maxlength="10"
             name="Phone"
             placeholder="Enter Phone"
-            value={Phone}
+            value={phone}
             onChange={onChangePhone}
           />
         </div>
 
         <div className="form-group">
-          <label>Birthday: {selectDate ? null : birthday.slice(0, 10)}</label>
+          <label>Birthday: </label>
           <div>
-            <DatePicker selected={selectDate} onChange={onChangebirthday} />
+            <DatePicker selected={birthday} onChange={onChangebirthday} />
           </div>
         </div>
 
@@ -155,7 +166,7 @@ export default function EditCustomer() {
             className="form-control"
             name="Email"
             placeholder="Enter Email"
-            value={Email}
+            value={email}
             onChange={onChangeEmail}
           />
         </div>
