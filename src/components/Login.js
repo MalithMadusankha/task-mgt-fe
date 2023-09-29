@@ -1,31 +1,26 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { SignIn } from "../auth/service";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 export default function CustomerRegister() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  function regUser(e) {
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  async function userLogin(e) {
     e.preventDefault();
 
-    const newUser = {
-      email,
-      password,
-    };
-
-    axios
-      .post(
-        "http://localhost:8070/driver/613728a89f2ac365dc10e3ab/reg",
-        newUser
-      )
-      .then(() => {
-        alert("Login Successfully");
-        e.target.reset(); // to clear input field after the submission
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    try {
+      const res = await SignIn(email, password);
+      if (res === 1) {
+        window.location.href = "/admin";
+      }
+    } catch (error) {}
   }
 
   return (
@@ -33,12 +28,11 @@ export default function CustomerRegister() {
       <div className="login">
         <div className="col-lg-9 mt-2 mb-2">
           <b>
-            {" "}
-            <h2> Login to the System </h2>{" "}
-          </b>{" "}
+            <h2> Login to the System </h2>
+          </b>
         </div>
         <br></br>
-        <form onSubmit={regUser}>
+        <form onSubmit={userLogin}>
           <div className="col-md-8 mb-3 font">
             <label htmlFor="license" className="form-label">
               Email Address
@@ -59,27 +53,35 @@ export default function CustomerRegister() {
             <label htmlFor="number" className="form-label">
               Password
             </label>
-            <input
-              type="text"
-              className="form-control"
-              id="password"
-              placeholder="Enter your password"
-              required
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
+            <div class="input-group mb-3">
+              <input
+                type={showPassword ? "text" : "password"}
+                class="form-control"
+                placeholder="Recipient's username"
+                aria-label="Recipient's username"
+                aria-describedby="basic-addon2"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
+              <span class="input-group-text" id="basic-addon2">
+                {showPassword ? (
+                  <AiFillEyeInvisible onClick={togglePasswordVisibility} />
+                ) : (
+                  <AiFillEye onClick={togglePasswordVisibility} />
+                )}
+              </span>
+            </div>
           </div>
 
           <hr className="col-md-10 mb-3" />
-          <Link to="/">
-            <button type="submit" className="btn btn-success btn-lg">
-              Login
-            </button>
-          </Link>
+
+          <button type="submit" className="btn btn-success btn-lg">
+            Login
+          </button>
 
           <div className="col-lg-9 mt-2 mb-2">
-            <b>Don't have an account?</b>{" "}
+            <b>Don't have an account?</b>
           </div>
 
           <Link to="/Register">

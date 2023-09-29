@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import LogoutButton from "../Button/LogoutButton";
 
 export default class NavbarEmployee extends Component {
   render() {
@@ -9,13 +10,8 @@ export default class NavbarEmployee extends Component {
         <div className="collpase navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="navbar-item">
-                <button
-                  onClick={() => (window.location.href = "/Login")}
-                  className="btn btn-sm btn-danger"
-                >
-                  Log Out
-                </button>
+              <li className="navbar-item pt-1">
+                <LogoutButton />
               </li>
             </ul>
 

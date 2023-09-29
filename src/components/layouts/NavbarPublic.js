@@ -9,7 +9,7 @@ export default class NavbarPublic extends Component {
         <div className="collpase navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="navbar-item">
+              <li className="navbar-item pt-1">
                 <NavLink to="/Login" className="nav-link">
                   Login
                 </NavLink>
@@ -37,22 +37,6 @@ export default class NavbarPublic extends Component {
             <li className="navbar-item">
               <NavLink to="/contact" className="nav-link">
                 Contact Us
-              </NavLink>
-            </li>
-
-            <li className="navbar-item">
-              <NavLink to="/Customer" className="nav-link">
-                Customer
-              </NavLink>
-            </li>
-            <li className="navbar-item">
-              <NavLink to="/Employee/" className="nav-link">
-                Employee
-              </NavLink>
-            </li>
-            <li className="navbar-item">
-              <NavLink to="/Task/" className="nav-link">
-                Task
               </NavLink>
             </li>
           </ul>

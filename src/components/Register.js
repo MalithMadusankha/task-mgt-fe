@@ -1,42 +1,60 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import SignUp from "../auth/service";
 import axios from "axios";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 
 export default function CustomerRegister() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [nearbyTown, setLocation] = useState("");
-  const [contactNo, setNumber] = useState("");
-  const [userType, setType] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [type, setType] = useState("");
   const [password, setPassword] = useState("");
-  const [img1, setImg1] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [rePassword, setRePassword] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isMatch, setIsMatch] = useState(false);
 
-  function regUser(e) {
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  async function regUser(e) {
     e.preventDefault();
 
-    const newUser = {
-      name,
-      email,
-      nearbyTown,
-      contactNo,
-      userType,
-      password,
-      img1,
-    };
+    try {
+      if (password === rePassword) {
+        setIsMatch(true);
 
-    axios
-      .post(
-        "http://localhost:8070/driver/613728a89f2ac365dc10e3ab/reg",
-        newUser
-      )
-      .then(() => {
-        alert("Registered Successfully");
-        e.target.reset(); // to clear input field after the submission
-      })
+        const firebaseId = await SignUp(email, password);
 
-      .catch((err) => {
-        alert(err);
-      });
+        const newUser = {
+          firebaseId,
+          type,
+          email,
+          userId: "",
+          username: name,
+          address,
+          phone,
+          birthday,
+          position: "",
+          gender: "",
+        };
+        console.log("newUser :", newUser);
+
+        const res = await axios.post("http://localhost:5000/user/add", newUser);
+        if (res.data.status === 200) {
+          alert("Success Fully added ");
+          window.location = "/admin";
+        }
+      } else {
+        setIsMatch(false);
+      }
+    } catch (error) {
+      console.log("error : ", error);
+    }
   }
 
   return (
@@ -44,9 +62,8 @@ export default function CustomerRegister() {
       <div className="register">
         <div className="col-lg-9 mt-2 mb-2">
           <b>
-            {" "}
-            <h2> Register to the System </h2>{" "}
-          </b>{" "}
+            <h2> Register to the System </h2>
+          </b>
         </div>
         <br></br>
         <form onSubmit={regUser}>
@@ -84,24 +101,18 @@ export default function CustomerRegister() {
 
           <div className="col-md-8 mb-3 font">
             <label htmlFor="category" className="form-label">
-              Nearby Location
+              Address
             </label>
-            <select
-              className="form-select"
+            <input
+              type="text"
+              className="form-control"
+              id="address"
+              placeholder="Enter your address"
               required
               onChange={(e) => {
-                setLocation(e.target.value);
+                setAddress(e.target.value);
               }}
-            >
-              <option selected>Select the closest location</option>
-              <option value={"Akuressa"}>Akuressa</option>
-              <option value={"Godagama"}>Godagama</option>
-              <option value={"Hakmana"}>Hakmana</option>
-              <option value={"Kamburupitiya"}>Kamburupitiya</option>
-              <option value={"Matara"}>Matara</option>
-              <option value={"Telijjawila"}>Telijjawila</option>
-              <option value={"Weligama"}>Weligama</option>
-            </select>
+            />
           </div>
 
           <div className="col-md-8 mb-3 font">
@@ -111,11 +122,11 @@ export default function CustomerRegister() {
             <input
               type="text"
               className="form-control"
-              id="regNumber"
+              id="phone"
               placeholder="Ex :- 07x-xxxxxxx"
               required
               onChange={(e) => {
-                setNumber(e.target.value);
+                setPhone(e.target.value);
               }}
             />
           </div>
@@ -132,9 +143,19 @@ export default function CustomerRegister() {
               }}
             >
               <option selected>Choose User Type</option>
-              <option value={"Customer"}>Customer</option>
-              <option value={"Staff"}>Staff</option>
+              <option value={"CUSTOMER"}>CUSTOMER</option>
+              <option value={"EMPLOYEE"}>EMPLOYEE</option>
             </select>
+          </div>
+
+          <div className="form-group">
+            <label> Birthday: </label>
+            <div>
+              <DatePicker
+                selected={birthday}
+                onChange={(date) => setBirthday(date)}
+              />
+            </div>
           </div>
 
           <br></br>
@@ -143,14 +164,48 @@ export default function CustomerRegister() {
             <label htmlFor="password" className="form-label">
               Password
             </label>
+            <div class="input-group mb-3">
+              <input
+                type={showPassword ? "text" : "password"}
+                class="form-control"
+                placeholder="Recipient's username"
+                aria-label="Recipient's username"
+                aria-describedby="basic-addon2"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setIsMatch(password === rePassword ? true : false);
+                }}
+              />
+              <span class="input-group-text" id="basic-addon2">
+                {showPassword ? (
+                  <AiFillEyeInvisible onClick={togglePasswordVisibility} />
+                ) : (
+                  <AiFillEye onClick={togglePasswordVisibility} />
+                )}
+              </span>
+            </div>
+          </div>
+
+          <div className="col-md-8 mb-3 font">
+            <label htmlFor="password" className="form-label">
+              Confirm Password
+              {rePassword !== null ? (
+                !isMatch ? (
+                  <span className="text-danger"> password is not match</span>
+                ) : (
+                  <span className="text-success"> match</span>
+                )
+              ) : null}
+            </label>
             <input
-              type="text"
+              type={showPassword ? "text" : "password"}
               className="form-control"
-              id="email"
+              id="re-password"
               placeholder="Enter your Password"
               required
               onChange={(e) => {
-                setPassword(e.target.value);
+                setRePassword(e.target.value);
+                setIsMatch(password === rePassword ? true : false);
               }}
             />
           </div>
@@ -170,11 +225,10 @@ export default function CustomerRegister() {
           </div>
 
           <hr className="col-md-10 mb-3" />
-          <Link to="/Login">
-            <button type="submit" className="btn btn-success btn-lg">
-              Register
-            </button>
-          </Link>
+
+          <button type="submit" className="btn btn-success btn-lg">
+            Register
+          </button>
         </form>
       </div>
     </div>

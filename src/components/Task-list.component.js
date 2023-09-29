@@ -108,7 +108,7 @@ export default class TaskList extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="m-3">
         <div className="row">
           <div className="col-lg-9 mt-2 mb-2">
             <b>
