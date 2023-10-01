@@ -45,6 +45,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Admin Routes */}
         <Route
           path="/admin"
           element={<AdminLayout isAuthenticated={isAuthenticated} />}
@@ -59,15 +60,15 @@ function App() {
           <Route path="/admin/event/edit/:id" element={<EditEvent />} />
           <Route path="/admin/event/create" element={<CreateEvent />} />
 
+          <Route path="/admin/Employee" element={<EmployeeList />} />
           <Route path="/admin/Employee/add" element={<CreateEmployee />} />
           <Route path="/admin/EmpReport" element={<EmpReport />} />
+          <Route path="/admin/EMP/Edit/:id" element={<EditEmployee />} />
+
           <Route path="/admin/Task" element={<TaskList />} />
           <Route path="/admin/Task/add" element={<CreateTask />} />
-          <Route path="/admin/Employee" element={<EmployeeList />} />
-          <Route path="/admin/Taskcre" element={<createTask />} />
           <Route path="/admin/ReportTask" element={<ReportTask />} />
-          <Route path="/admin/Taskedit/Edit/:id" element={<Edittask />} />
-          <Route path="/admin/EMP/Edit/:id" element={<EditEmployee />} />
+          <Route path="/admin/Task/edit/:id" element={<Edittask />} />
 
           <Route path="/admin/about" element={<About />} />
           <Route path="/admin/contact" element={<Contact />} />
@@ -77,6 +78,38 @@ function App() {
           <Route path="/admin/AddDelivery" element={<AddDelivery />} />
           <Route path="/admin" element={<Home />} />
         </Route>
+
+        {/* Customer Routes */}
+        <Route element={<PublicLayout />}>
+          <Route path="/customer/Event" element={<EventList />} />
+          <Route path="/customer/ReportEvent" element={<ReportCus />} />
+          <Route path="/customer/event/edit/:id" element={<EditEvent />} />
+          <Route path="/customer/event/create" element={<CreateEvent />} />
+
+          <Route path="/customer/about" element={<About />} />
+          <Route path="/customer/contact" element={<Contact />} />
+          <Route path="/customer/Login" element={<Login />} />
+          <Route path="/customer/Register" element={<Register />} />
+          <Route path="/customer/disDiary" element={<DisDiary />} />
+          <Route path="/customer/AddDelivery" element={<AddDelivery />} />
+          <Route path="/customer/" element={<Home />} />
+        </Route>
+
+        {/* Employee Routes */}
+        <Route element={<PublicLayout />}>
+          <Route path="/empolyee/Task" element={<TaskList />} />
+          <Route path="/empolyee/Taskedit/Edit/:id" element={<Edittask />} />
+          <Route path="/empolyee/ReportTask" element={<ReportTask />} />
+          <Route path="/empolyee/about" element={<About />} />
+          <Route path="/empolyee/contact" element={<Contact />} />
+          <Route path="/empolyee/Login" element={<Login />} />
+          <Route path="/empolyee/Register" element={<Register />} />
+          <Route path="/empolyee/disDiary" element={<DisDiary />} />
+          <Route path="/empolyee/AddDelivery" element={<AddDelivery />} />
+          <Route path="/empolyee/" element={<Home />} />
+        </Route>
+
+        {/* Public Routes */}
         <Route element={<PublicLayout />}>
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

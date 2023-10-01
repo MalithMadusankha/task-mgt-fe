@@ -47,7 +47,11 @@ export default function CustomerRegister() {
         const res = await axios.post("http://localhost:5000/user/add", newUser);
         if (res.data.status === 200) {
           alert("Success Fully added ");
-          window.location = "/admin";
+          if (type === "CUSTOMER") {
+            window.location = "/customer";
+          } else if (type === "EMPLOYEE") {
+            window.location = "/employee";
+          }
         }
       } else {
         setIsMatch(false);

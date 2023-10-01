@@ -138,7 +138,7 @@ export default class EmployeeList extends Component {
                   <td>
                     <Link
                       className="btn btn-warning btn-sm mx-1"
-                      to={"/EMP/Edit/" + emp._id}
+                      to={"/admin/EMP/Edit/" + emp._id}
                     >
                       Edit
                     </Link>
@@ -158,7 +158,7 @@ export default class EmployeeList extends Component {
           ) : null}
 
           <br></br>
-          <Link className="mx-3" to="/Employee/add/">
+          <Link className="mx-3" to="/admin/Employee/add/">
             <Button variant="primary">New Employee</Button>
           </Link>
 

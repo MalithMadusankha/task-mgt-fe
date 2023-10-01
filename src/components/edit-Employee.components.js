@@ -6,24 +6,30 @@ import { useParams } from "react-router-dom";
 
 export default function EditETask() {
   const { id } = useParams();
-  const [Eid, setEid] = useState("");
+  const [email, setemail] = useState("");
+  const [firebaseId, setfirebaseId] = useState("");
+  const [type, settype] = useState("");
+  const [userId, setuserId] = useState("");
   const [username, setusername] = useState("");
-  const [Address, setAddress] = useState("");
-  const [Phone, setPhone] = useState("");
+  const [address, setaddress] = useState("");
+  const [phone, setphone] = useState("");
+  const [position, setposition] = useState("");
+  const [gender, setgender] = useState("");
   const [birthday, setbirthday] = useState("");
-  const [Position, setPosition] = useState("");
-  const [Gender, setGender] = useState("");
 
   const getEmployee = () => {
     axios
-      .get("http://localhost:5000/Employee/" + id)
+      .get("http://localhost:5000/user/" + id)
       .then((response) => {
-        setEid(response.data.Eid);
+        setemail(response.data.email);
+        setfirebaseId(response.data.firebaseId);
+        settype(response.data.type);
+        setuserId(response.data.userId);
         setusername(response.data.username);
-        setAddress(response.data.Address);
-        setPhone(response.data.Phone);
-        setPosition(response.data.Position);
-        setGender(response.data.Gender);
+        setaddress(response.data.address);
+        setphone(response.data.phone);
+        setposition(response.data.position);
+        setgender(response.data.gender);
         setbirthday(new Date(response.data.birthday));
       })
       .catch(function (error) {
@@ -34,7 +40,7 @@ export default function EditETask() {
   //set the Eid
 
   const onChangeEid = (e) => {
-    setEid(e.target.value);
+    setuserId(e.target.value);
   };
 
   //set the username
@@ -44,13 +50,13 @@ export default function EditETask() {
   };
   //set Address
   const onChangeAddress = (e) => {
-    setAddress(e.target.value);
+    setaddress(e.target.value);
   };
 
   //set Phone
 
   const onChangePhone = (e) => {
-    setPhone(e.target.value);
+    setphone(e.target.value);
   };
   //Set birthday
 
@@ -59,31 +65,34 @@ export default function EditETask() {
   };
   //set Position
   const onChangePosition = (e) => {
-    setPosition(e.target.value);
+    setposition(e.target.value);
   };
 
   //set Gender
   const onChangeGender = (e) => {
-    setGender(e.target.value);
+    setgender(e.target.value);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     const Employee = {
-      Eid: Eid,
-      username: username,
-      Address: Address,
-      Phone: Phone,
-      birthday: birthday,
-      Position: Position,
-      Gender: Gender,
+      email,
+      firebaseId,
+      type,
+      userId,
+      username,
+      address,
+      phone,
+      position,
+      gender,
+      birthday,
     };
 
     console.log(Employee);
 
     axios
-      .post("http://localhost:5000/Employee/update/" + id, Employee)
+      .post("http://localhost:5000/user/update/" + id, Employee)
       .then((res) => {
         console.log(res.data);
         alert("Updated Successfully");
@@ -105,7 +114,7 @@ export default function EditETask() {
             className="form-control"
             name="Employee Code "
             placeholder="Employee Code"
-            value={Eid}
+            value={userId}
             onChange={onChangeEid}
           />
         </div>
@@ -129,7 +138,7 @@ export default function EditETask() {
             className="form-control"
             name="Address"
             placeholder="Enter Address"
-            value={Address}
+            value={address}
             onChange={onChangeAddress}
           />
         </div>
@@ -142,7 +151,7 @@ export default function EditETask() {
             maxlength="10"
             name="Phone"
             placeholder="Enter Phone"
-            value={Phone}
+            value={phone}
             onChange={onChangePhone}
           />
         </div>
@@ -160,7 +169,7 @@ export default function EditETask() {
             className="form-control"
             name="Position"
             placeholder="Enter Position"
-            value={Position}
+            value={position}
             onChange={onChangePosition}
           />
         </div>
@@ -172,7 +181,7 @@ export default function EditETask() {
             className="form-control"
             name="Gender"
             placeholder="Enter Gender"
-            value={Gender}
+            value={gender}
             onChange={onChangeGender}
           />
         </div>
