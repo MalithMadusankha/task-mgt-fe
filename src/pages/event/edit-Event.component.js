@@ -12,6 +12,20 @@ export default function EditEvent() {
   const [phone, setphone] = useState("");
   const [date, setdate] = useState("");
   const [attend, setAttend] = useState([]);
+  const [isAttend, setIsAttend] = useState(false);
+  const [isSubmite, setIsSubmite] = useState(false);
+
+  const userType = window.localStorage.getItem("userType");
+  const userId = window.localStorage.getItem("userId");
+
+  const checkAttend = (attend) => {
+    for (let i = 0; i < attend.length; i++) {
+      if (attend[i].customerId === userId) {
+        return true; // Condition met, return true
+      }
+    }
+    return false; // Condition not met, return false
+  };
 
   useEffect(() => {
     getEvent();
@@ -30,6 +44,8 @@ export default function EditEvent() {
           setphone(response.data.phone);
           setdate(new Date(response.data.date));
           setAttend(response.data.attend);
+          // to hadle attend user
+          setIsAttend(checkAttend(response.data.attend));
         })
         .catch(function (error) {
           console.log(error);
@@ -58,6 +74,20 @@ export default function EditEvent() {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    let newAttend = attend;
+    if (userType === "CUSTOMER") {
+      console.log("isAttend", isAttend);
+
+      if (isAttend) {
+        newAttend = attend.filter((el) => el.customerId !== userId);
+        console.log(
+          "attend.filter((el) => el.customerId !== userId) ; ",
+          newAttend
+        );
+      } else {
+        newAttend.push({ customerId: userId });
+      }
+    }
 
     const Event = {
       eventId,
@@ -65,7 +95,7 @@ export default function EditEvent() {
       address,
       phone,
       date,
-      attend,
+      attend: newAttend,
     };
 
     console.log(Event);
@@ -75,6 +105,7 @@ export default function EditEvent() {
       .then((res) => {
         console.log(res.data);
         alert("Successfully updated ");
+        setIsSubmite(true);
       });
   };
 
@@ -92,6 +123,7 @@ export default function EditEvent() {
             name="Event Code "
             placeholder="Event Code"
             value={eventId}
+            disabled={userType !== "ADMIN"}
             onChange={(e) => seteventId(e.target.value)}
           />
         </div>
@@ -104,6 +136,7 @@ export default function EditEvent() {
             name="User Name"
             placeholder="Enter User Name"
             value={name}
+            disabled={userType !== "ADMIN"}
             onChange={onChangename}
           />
         </div>
@@ -116,6 +149,7 @@ export default function EditEvent() {
             name="Address"
             placeholder="Enter Address"
             value={address}
+            disabled={userType !== "ADMIN"}
             onChange={onChangeAddress}
           />
         </div>
@@ -130,6 +164,7 @@ export default function EditEvent() {
             name="Phone"
             placeholder="Enter Phone"
             value={phone}
+            disabled={userType !== "ADMIN"}
             onChange={onChangePhone}
           />
         </div>
@@ -137,12 +172,30 @@ export default function EditEvent() {
         <div className="form-group">
           <label>Event Date: </label>
           <div>
-            <DatePicker selected={date} onChange={onChangeDate} />
+            <DatePicker
+              disabled={userType !== "ADMIN"}
+              selected={date}
+              onChange={onChangeDate}
+            />
           </div>
         </div>
 
         <div className="form-group">
-          <input type="submit" value="Update" className="btn btn-primary" />
+          {userType === "ADMIN" ? (
+            <input
+              type="submit"
+              value="Update"
+              className="btn btn-primary my-3"
+              disabled={isSubmite}
+            />
+          ) : userType === "CUSTOMER" ? (
+            <input
+              type="submit"
+              value={isAttend ? "Not Attend" : "Attend"}
+              className="btn btn-primary my-3"
+              disabled={isSubmite}
+            />
+          ) : null}
         </div>
       </form>
     </div>

@@ -3,8 +3,11 @@ import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function EditTask() {
+  const location = useLocation();
+  const layout = location.pathname.split("/")[1];
   const { id } = useParams();
   const [Tid, setTid] = useState("");
   const [Taskname, setTaskname] = useState("");
@@ -92,6 +95,7 @@ export default function EditTask() {
         <div className="form-group" style={{ marginBottom: "15px" }}>
           <label style={{ marginBottom: "5px" }}> Task Code </label>
           <input
+            disabled={layout !== "admin"}
             type="text"
             required
             className="form-control"
@@ -104,6 +108,7 @@ export default function EditTask() {
         <div className="form-group">
           <label> Task Name: </label>
           <input
+            disabled={layout !== "admin"}
             type="text"
             required
             className="form-control"
@@ -116,6 +121,7 @@ export default function EditTask() {
         <div className="form-group">
           <label> Category: </label>
           <input
+            disabled={layout !== "admin"}
             type="text"
             required
             className="form-control"
@@ -129,13 +135,18 @@ export default function EditTask() {
         <div className="form-group">
           <label> Modified: </label>
           <div>
-            <DatePicker selected={Modified} onChange={onChangeModified} />
+            <DatePicker
+              disabled={layout !== "admin"}
+              selected={Modified}
+              onChange={onChangeModified}
+            />
           </div>
         </div>
 
         <div className="form-group">
           <label> Description: </label>
           <input
+            disabled={layout !== "admin"}
             type="text"
             required
             className="form-control"
@@ -160,7 +171,11 @@ export default function EditTask() {
         </div>
 
         <div className="form-group">
-          <input type="submit" value="Update" className="btn btn-primary" />
+          <input
+            type="submit"
+            value="Update"
+            className="btn btn-primary mt-3"
+          />
         </div>
       </form>
     </div>

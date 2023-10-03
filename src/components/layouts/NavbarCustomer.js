@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import LogoutButton from "../Button/LogoutButton";
 
-export default class NavbarEmployee extends Component {
+export default class NavbarCustomer extends Component {
   render() {
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <NavLink to="/" className="navbar-brand"></NavLink>
+        <NavLink to="/customer" className="navbar-brand"></NavLink>
         <div className="collpase navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -16,26 +16,26 @@ export default class NavbarEmployee extends Component {
             </ul>
 
             <li className="navbar-item">
-              <NavLink to="/" className="nav-link">
+              <NavLink to="/customer" className="nav-link">
                 Home
               </NavLink>
             </li>
 
             <li className="navbar-item">
-              <NavLink to="/about" className="nav-link">
+              <NavLink to="/customer/about" className="nav-link">
                 About Us
               </NavLink>
             </li>
 
             <li className="navbar-item">
-              <NavLink to="/contact" className="nav-link">
+              <NavLink to="/customer/contact" className="nav-link">
                 Contact Us
               </NavLink>
             </li>
 
             <li className="navbar-item">
-              <NavLink to="/employee/Task/" className="nav-link">
-                Task
+              <NavLink to="/customer/Event" className="nav-link">
+                Event
               </NavLink>
             </li>
           </ul>

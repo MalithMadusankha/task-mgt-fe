@@ -1,15 +1,32 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { SignIn } from "../auth/service";
+import { GetFirebaseID, SignIn } from "../../auth/service";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import axios from "axios";
 
 export default function CustomerRegister() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [userType, setUserType] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const getUser = async (id) => {
+    try {
+      const res = await axios.get("http://localhost:5000/user/firebase/" + id);
+      console.log("res :", res.data);
+      const type = res.data[0].type;
+      localStorage.setItem("userType", type);
+      localStorage.setItem("userId", res.data[0]._id);
+      setUserType(type);
+
+      return type;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   async function userLogin(e) {
@@ -18,7 +35,21 @@ export default function CustomerRegister() {
     try {
       const res = await SignIn(email, password);
       if (res === 1) {
-        window.location.href = "/admin";
+        console.log("if ==>");
+        const firebaseId = await GetFirebaseID();
+        if (firebaseId !== 0) {
+          console.log("if ==>", firebaseId);
+          const type = await getUser(firebaseId);
+          console.log("type:", type);
+          if (type === "CUSTOMER") {
+            console.log("CUSTOMER: T");
+            window.location.href = "/customer";
+          } else if (type === "EMPLOYEE") {
+            window.location.href = "/employee";
+          } else if (type === "ADMIN") {
+            window.location.href = "/admin";
+          }
+        }
       }
     } catch (error) {}
   }

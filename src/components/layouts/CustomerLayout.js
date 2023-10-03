@@ -1,16 +1,16 @@
 import React from "react";
 import Header from "./Header";
-import NavbarAdmin from "./NavbarAdmin";
 import Footer from "./Footer";
 import { Outlet, Navigate } from "react-router-dom";
+import NavbarCustomer from "./NavbarCustomer";
 
-const AdminLayout = ({ isAuthenticated, isValidUser }) => {
+const CustomerLayout = ({ isAuthenticated, isValidUser }) => {
   if (isAuthenticated && isValidUser) {
     return (
       <div>
         <header>
           <Header />
-          <NavbarAdmin />
+          <NavbarCustomer />
           <br />
         </header>
         <Outlet />
@@ -24,4 +24,4 @@ const AdminLayout = ({ isAuthenticated, isValidUser }) => {
   }
 };
 
-export default AdminLayout;
+export default CustomerLayout;

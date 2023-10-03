@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SignUp from "../auth/service";
+import SignUp from "../../auth/service";
 import axios from "axios";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import "react-datepicker/dist/react-datepicker.css";
@@ -46,12 +46,7 @@ export default function CustomerRegister() {
 
         const res = await axios.post("http://localhost:5000/user/add", newUser);
         if (res.data.status === 200) {
-          alert("Success Fully added ");
-          if (type === "CUSTOMER") {
-            window.location = "/customer";
-          } else if (type === "EMPLOYEE") {
-            window.location = "/employee";
-          }
+          window.location = "/Login";
         }
       } else {
         setIsMatch(false);

@@ -1,10 +1,10 @@
 import React from "react";
-import Slider from "../inc/Slider";
+import Slider from "../components/inc/Slider";
 import { Link } from "react-router-dom";
 import VMC from "./inc/Vmc";
-import Service1 from "../images/image 14.png";
-import Service2 from "../images/image 17.jpg";
-import Service3 from "../images/image 23.jpeg";
+import Service1 from "../assert/images/image 14.png";
+import Service2 from "../assert/images/image 17.jpg";
+import Service3 from "../assert/images/image 23.jpeg";
 
 function Home() {
   return (

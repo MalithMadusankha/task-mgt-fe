@@ -3,41 +3,51 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Import Routes from react-router-dom
 
-import NavbarPublic from "./components/layouts/NavbarPublic";
-import Header from "./components/layouts/Header";
-import Footer from "./components/layouts/Footer";
-import EditCustomer from "./components/edit-Customer.component";
-import CreateCustomer from "./components/create-Customer.component";
-import CreateEmployee from "./components/create-Employee.component";
-import TaskList from "./components/Task-list.component";
-import EditEmployee from "./components/edit-Employee.components";
-import CustomerList from "./components/Customer-list.component";
-import EventList from "./components/Event-list.component";
-import Home from "./components/pages/Home";
-import EmployeeList from "./components/Employee-list.component";
-import CreateTask from "./components/create-Task.component";
-import Edittask from "./components/edit-Task.component";
-import About from "./components/pages/About";
-import Contact from "./components/pages/Contact";
+import EditCustomer from "./pages/customer/edit-Customer.component";
+import CreateCustomer from "./pages/customer/create-Customer.component";
+import CreateEmployee from "./pages/employee/create-Employee.component";
+import TaskList from "./pages/task/Task-list.component";
+import EditEmployee from "./pages/employee/edit-Employee.components";
+import CustomerList from "./pages/customer/Customer-list.component";
+import EventList from "./pages/event/Event-list.component";
+import Home from "./pages/Home";
+import EmployeeList from "./pages/employee/Employee-list.component";
+import CreateTask from "./pages/task/create-Task.component";
+import Edittask from "./pages/task/edit-Task.component";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
-import ReportCus from "./components/Report-Customer.component";
-import EmpReport from "./components/Employee-Report.component";
-import ReportTask from "./components/Task-Report.component";
+import ReportCus from "./pages/customer/Report-Customer.component";
+import EmpReport from "./pages/employee/Employee-Report.component";
+import ReportTask from "./pages/task/Task-Report.component";
 
 import DisDiary from "./components/disDiary";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./pages/user/Login";
+import Register from "./pages/user/Register";
 import AddDelivery from "./components/AddDelivery";
-import NavbarAdmin from "./components/layouts/NavbarAdmin";
-import PrivateRoute from "./components/routes/PrivateRoute";
 import AdminLayout from "./components/layouts/AdminLayout";
 import PublicLayout from "./components/layouts/PublicLayout";
-import CreateEvent from "./components/create-Event.component";
-import EditEvent from "./components/edit-Event.component";
+import CreateEvent from "./pages/event/create-Event.component";
+import EditEvent from "./pages/event/edit-Event.component";
+import CustomerLayout from "./components/layouts/CustomerLayout";
+import EmployeeLayout from "./components/layouts/EmployeeLayout";
 
 function App() {
   let isAuthenticated = false;
+  let uType = localStorage.getItem("userType");
   let token = localStorage.getItem("token");
+  let isEmployee,
+    isAdmin,
+    isCustomer = false;
+
+  if (uType === "EMPLOYEE") {
+    isEmployee = true;
+  } else if (uType === "CUSTOMER") {
+    isCustomer = true;
+  } else if (uType === "ADMIN") {
+    isAdmin = true;
+  }
+
   if (token) {
     isAuthenticated = true;
   }
@@ -48,7 +58,12 @@ function App() {
         {/* Admin Routes */}
         <Route
           path="/admin"
-          element={<AdminLayout isAuthenticated={isAuthenticated} />}
+          element={
+            <AdminLayout
+              isAuthenticated={isAuthenticated}
+              isValidUser={isAdmin}
+            />
+          }
         >
           <Route path="/admin/Customer" element={<CustomerList />} />
           <Route path="/admin/ReportCus" element={<ReportCus />} />
@@ -80,7 +95,14 @@ function App() {
         </Route>
 
         {/* Customer Routes */}
-        <Route element={<PublicLayout />}>
+        <Route
+          element={
+            <CustomerLayout
+              isAuthenticated={isAuthenticated}
+              isValidUser={isCustomer}
+            />
+          }
+        >
           <Route path="/customer/Event" element={<EventList />} />
           <Route path="/customer/ReportEvent" element={<ReportCus />} />
           <Route path="/customer/event/edit/:id" element={<EditEvent />} />
@@ -96,17 +118,24 @@ function App() {
         </Route>
 
         {/* Employee Routes */}
-        <Route element={<PublicLayout />}>
-          <Route path="/empolyee/Task" element={<TaskList />} />
-          <Route path="/empolyee/Taskedit/Edit/:id" element={<Edittask />} />
-          <Route path="/empolyee/ReportTask" element={<ReportTask />} />
-          <Route path="/empolyee/about" element={<About />} />
-          <Route path="/empolyee/contact" element={<Contact />} />
-          <Route path="/empolyee/Login" element={<Login />} />
-          <Route path="/empolyee/Register" element={<Register />} />
-          <Route path="/empolyee/disDiary" element={<DisDiary />} />
-          <Route path="/empolyee/AddDelivery" element={<AddDelivery />} />
-          <Route path="/empolyee/" element={<Home />} />
+        <Route
+          element={
+            <EmployeeLayout
+              isAuthenticated={isAuthenticated}
+              isValidUser={isEmployee}
+            />
+          }
+        >
+          <Route path="/employee/Task" element={<TaskList />} />
+          <Route path="/employee/Task/edit/:id" element={<Edittask />} />
+          <Route path="/employee/ReportTask" element={<ReportTask />} />
+          <Route path="/employee/about" element={<About />} />
+          <Route path="/employee/contact" element={<Contact />} />
+          <Route path="/employee/Login" element={<Login />} />
+          <Route path="/employee/Register" element={<Register />} />
+          <Route path="/employee/disDiary" element={<DisDiary />} />
+          <Route path="/employee/AddDelivery" element={<AddDelivery />} />
+          <Route path="/employee/" element={<Home />} />
         </Route>
 
         {/* Public Routes */}

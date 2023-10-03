@@ -1,16 +1,16 @@
 import React from "react";
 import Header from "./Header";
-import NavbarAdmin from "./NavbarAdmin";
 import Footer from "./Footer";
 import { Outlet, Navigate } from "react-router-dom";
+import NavbarEmployee from "./NavbarEmployee";
 
-const AdminLayout = ({ isAuthenticated, isValidUser }) => {
+const EmployeeLayout = ({ isAuthenticated, isValidUser }) => {
   if (isAuthenticated && isValidUser) {
     return (
       <div>
         <header>
           <Header />
-          <NavbarAdmin />
+          <NavbarEmployee />
           <br />
         </header>
         <Outlet />
@@ -24,4 +24,4 @@ const AdminLayout = ({ isAuthenticated, isValidUser }) => {
   }
 };
 
-export default AdminLayout;
+export default EmployeeLayout;

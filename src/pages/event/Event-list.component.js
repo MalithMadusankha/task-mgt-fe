@@ -7,6 +7,7 @@ export default function EventList() {
   const location = useLocation();
   const layout = location.pathname.split("/")[1];
   const [Event, setEvent] = useState([]);
+  const customerId = window.localStorage.getItem("userId");
 
   const deleteEvent = (id) => {
     if (window.confirm("Are you sure?")) {
@@ -16,6 +17,15 @@ export default function EventList() {
 
       setEvent(Event.filter((el) => el._id !== id));
     }
+  };
+
+  const checkAttend = (attend) => {
+    for (let i = 0; i < attend.length; i++) {
+      if (attend[i].customerId === customerId) {
+        return true; // Condition met, return true
+      }
+    }
+    return false; // Condition not met, return false
   };
 
   const handleSearchArea = (e) => {
@@ -89,7 +99,11 @@ export default function EventList() {
                   className="btn btn-warning btn-sm mx-1"
                   to={`/${layout}/event/edit/${props?._id}`}
                 >
-                  {layout === "admin" ? "Edit" : "Attend"}
+                  {layout === "admin"
+                    ? "Edit"
+                    : checkAttend(props?.attend)
+                    ? "You Booked"
+                    : "Ask Attend"}
                 </Link>
                 {layout === "admin" ? (
                   <button

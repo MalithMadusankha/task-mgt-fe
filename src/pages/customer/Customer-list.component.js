@@ -112,7 +112,7 @@ export default function CustomerList() {
                 <td>
                   <Link
                     className="btn btn-warning btn-sm mx-1"
-                    to={`admin/edit/${props._id}`}
+                    to={`/admin/edit/${props._id}`}
                   >
                     Edit
                   </Link>
@@ -130,10 +130,10 @@ export default function CustomerList() {
           ))}
         </tbody>
         <br></br>
-        <Link className="mx-3" to="/create">
+        <Link className="mx-3" to="/admin/create">
           <Button variant="primary">New Customer </Button>
         </Link>
-        <Link to="/ReportCus">
+        <Link to="/admin/ReportCus">
           <Button variant="primary">Generate Report </Button>
         </Link>
         <br></br>
