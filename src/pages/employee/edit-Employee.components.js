@@ -3,6 +3,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useParams } from "react-router-dom";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 export default function EditETask() {
   const { id } = useParams();
@@ -19,7 +20,7 @@ export default function EditETask() {
 
   const getEmployee = () => {
     axios
-      .get("http://localhost:5000/user/" + id)
+      .get("http://localhost:5000/user/" + id, AuthHeader())
       .then((response) => {
         setemail(response.data.email);
         setfirebaseId(response.data.firebaseId);
@@ -92,7 +93,7 @@ export default function EditETask() {
     console.log(Employee);
 
     axios
-      .post("http://localhost:5000/user/update/" + id, Employee)
+      .post("http://localhost:5000/user/update/" + id, Employee, AuthHeader())
       .then((res) => {
         console.log(res.data);
         alert("Updated Successfully");
@@ -100,7 +101,7 @@ export default function EditETask() {
   };
   useEffect(() => {
     getEmployee();
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <div className="container mb-5">
@@ -148,7 +149,7 @@ export default function EditETask() {
             type="text"
             required
             className="form-control"
-            maxlength="10"
+            maxLength="10"
             name="Phone"
             placeholder="Enter Phone"
             value={phone}

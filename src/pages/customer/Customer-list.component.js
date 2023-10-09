@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Button } from "react-bootstrap";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 export default function CustomerList() {
   const location = useLocation();
@@ -10,7 +11,7 @@ export default function CustomerList() {
 
   const getCustomers = () => {
     axios
-      .get("http://localhost:5000/user/type/CUSTOMER")
+      .get("http://localhost:5000/user/type/CUSTOMER", AuthHeader())
       .then((response) => {
         setCustomer(response.data);
       })
@@ -21,51 +22,38 @@ export default function CustomerList() {
 
   const deleteCustomer = (id) => {
     if (window.confirm("Are you sure?")) {
-      axios.delete("http://localhost:5000/user/" + id).then((response) => {
-        console.log(response.data);
-      });
+      axios
+        .delete("http://localhost:5000/user/" + id, AuthHeader())
+        .then((response) => {
+          console.log(response.data);
+        });
 
       setCustomer(Customer.filter((el) => el._id !== id));
     }
   };
 
-  const customerList = () => {
-    return Customer.map((currentCustomer) => {
-      return (
-        <Customer
-          Customer={currentCustomer}
-          deleteCustomer={deleteCustomer}
-          key={currentCustomer._id}
-        />
-      );
-    });
-  };
-
-  const filterData = (Customer, searchKey) => {
-    setCustomer(Customer.filter((el) => (el.Username = searchKey)));
-  };
-
   const handleSearchArea = (e) => {
     const searchKey = e.currentTarget.value;
 
-    axios.get("http://localhost:5000/user/type/CUSTOMER").then((response) => {
-      const resultt = response.data;
-      const result = resultt.filter(
-        (props) =>
-          props.username.includes(searchKey) ||
-          props.userId.includes(searchKey) ||
-          props.address.includes(searchKey) ||
-          props.email.includes(searchKey)
-      );
+    axios
+      .get("http://localhost:5000/user/type/CUSTOMER", AuthHeader())
+      .then((response) => {
+        const resultt = response.data;
+        const result = resultt.filter(
+          (props) =>
+            props.username.includes(searchKey) ||
+            props.userId.includes(searchKey) ||
+            props.address.includes(searchKey) ||
+            props.email.includes(searchKey)
+        );
 
-      setCustomer(result);
-    });
+        setCustomer(result);
+      });
   };
 
   useEffect(() => {
     getCustomers();
-    console.log(location.pathname.split("/"));
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <div className="m-3">
@@ -129,16 +117,15 @@ export default function CustomerList() {
             </tr>
           ))}
         </tbody>
-        <br></br>
-        <Link className="mx-3" to="/admin/create">
-          <Button variant="primary">New Customer </Button>
-        </Link>
-        <Link to="/admin/ReportCus">
-          <Button variant="primary">Generate Report </Button>
-        </Link>
-        <br></br>
       </table>
-
+      <br></br>
+      <Link className="mx-3" to="/admin/create">
+        <Button variant="primary">New Customer </Button>
+      </Link>
+      <Link to="/admin/ReportCus">
+        <Button variant="primary">Generate Report </Button>
+      </Link>
+      <br></br>
       <div style={{ float: "right" }}>/</div>
     </div>
   );

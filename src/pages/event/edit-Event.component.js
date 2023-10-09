@@ -3,6 +3,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useParams } from "react-router-dom";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 export default function EditEvent() {
   const { id } = useParams();
@@ -14,6 +15,7 @@ export default function EditEvent() {
   const [attend, setAttend] = useState([]);
   const [isAttend, setIsAttend] = useState(false);
   const [isSubmite, setIsSubmite] = useState(false);
+  const [email, setEmail] = useState("");
 
   const userType = window.localStorage.getItem("userType");
   const userId = window.localStorage.getItem("userId");
@@ -29,13 +31,13 @@ export default function EditEvent() {
 
   useEffect(() => {
     getEvent();
-  }, []);
+  }, []); // eslint-disable-line
 
   const getEvent = () => {
     // Check if params and id exist before making the request
     if (id) {
       axios
-        .get("http://localhost:5000/event/" + id)
+        .get("http://localhost:5000/event/" + id, AuthHeader())
         .then((response) => {
           console.log("res ", response.data);
           seteventId(response.data.eventId);
@@ -80,10 +82,6 @@ export default function EditEvent() {
 
       if (isAttend) {
         newAttend = attend.filter((el) => el.customerId !== userId);
-        console.log(
-          "attend.filter((el) => el.customerId !== userId) ; ",
-          newAttend
-        );
       } else {
         newAttend.push({ customerId: userId });
       }
@@ -101,12 +99,38 @@ export default function EditEvent() {
     console.log(Event);
 
     axios
-      .post("http://localhost:5000/event/update/" + id, Event)
+      .post("http://localhost:5000/event/update/" + id, Event, AuthHeader())
       .then((res) => {
         console.log(res.data);
         alert("Successfully updated ");
         setIsSubmite(true);
       });
+
+    if (userType === "CUSTOMER") {
+      if (email === "") {
+        return;
+      }
+      const Email = {
+        to: email,
+        subject: "Even Boking Confirmation for " + name,
+        text: `You have ${
+          isAttend ? "cancel booking" : "booked"
+        } ${name} event. Date is ${date
+          .toString()
+          .slice(
+            0,
+            15
+          )}. If you want to contact us call this number ${phone}. Thank you for Booking`,
+      };
+
+      console.log("email det : ", Email);
+
+      axios.post("http://localhost:5000/Email/send", Email).then((res) => {
+        console.log(res.data);
+        alert("Successfully Sent Email ");
+        setIsSubmite(true);
+      });
+    }
   };
 
   return (
@@ -160,7 +184,7 @@ export default function EditEvent() {
             type="text"
             required
             className="form-control"
-            maxlength="10"
+            maxLength="10"
             name="Phone"
             placeholder="Enter Phone"
             value={phone}
@@ -179,6 +203,19 @@ export default function EditEvent() {
             />
           </div>
         </div>
+        {userType === "CUSTOMER" ? (
+          <div className="form-group">
+            <label> email: </label>
+            <input
+              type="text"
+              className="form-control"
+              name="Email"
+              placeholder="Enter Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+        ) : null}
 
         <div className="form-group">
           {userType === "ADMIN" ? (
@@ -191,7 +228,7 @@ export default function EditEvent() {
           ) : userType === "CUSTOMER" ? (
             <input
               type="submit"
-              value={isAttend ? "Not Attend" : "Attend"}
+              value={isAttend ? "Cancel Booking" : "Attend"}
               className="btn btn-primary my-3"
               disabled={isSubmite}
             />

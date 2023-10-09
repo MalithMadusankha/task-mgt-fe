@@ -3,6 +3,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useParams } from "react-router-dom";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 export default function EditCustomer() {
   const { id } = useParams();
@@ -17,15 +18,11 @@ export default function EditCustomer() {
   const [position, setposition] = useState("");
   const [gender, setgender] = useState("");
 
-  useEffect(() => {
-    getCustomer();
-  }, []);
-
   const getCustomer = () => {
     // Check if params and id exist before making the request
     if (id) {
       axios
-        .get("http://localhost:5000/user/" + id)
+        .get("http://localhost:5000/user/" + id, AuthHeader())
         .then((response) => {
           console.log("res ", response.data);
           setemail(response.data.email);
@@ -88,12 +85,16 @@ export default function EditCustomer() {
     console.log(Customer);
 
     axios
-      .post("http://localhost:5000/user/update/" + id, Customer)
+      .post("http://localhost:5000/user/update/" + id, Customer, AuthHeader())
       .then((res) => {
         console.log(res.data);
         alert("Successfully updated ");
       });
   };
+
+  useEffect(() => {
+    getCustomer();
+  }, []); // eslint-disable-line
 
   return (
     <div className="container mb-5">
@@ -143,7 +144,7 @@ export default function EditCustomer() {
             type="text"
             required
             className="form-control"
-            maxlength="10"
+            maxLength="10"
             name="Phone"
             placeholder="Enter Phone"
             value={phone}

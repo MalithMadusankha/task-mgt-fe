@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Header.css";
-import TaskLogo from "../images/taskLogo.png";
+import TaskLogo from "../../assert/images/taskLogo.png";
 
 export class Header extends Component {
   render() {

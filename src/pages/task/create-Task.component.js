@@ -3,6 +3,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 export default class CreateTask extends Component {
   constructor(props) {
@@ -88,10 +89,12 @@ export default class CreateTask extends Component {
 
     console.log(Task);
 
-    axios.post("http://localhost:5000/Task/add", Task).then((res) => {
-      console.log(res.data);
-      alert("Task Created");
-    });
+    axios
+      .post("http://localhost:5000/Task/add", Task, AuthHeader())
+      .then((res) => {
+        console.log(res.data);
+        alert("Task Created");
+      });
   }
 
   render() {

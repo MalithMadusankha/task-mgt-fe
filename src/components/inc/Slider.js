@@ -1,7 +1,7 @@
 import React from "react";
-import garden from "../images/image 20.jpg";
-import garden1 from "../images/image 8.jpg";
-import garden2 from "../images/thinkstockphotos-185539853_1.jpg";
+import garden from "../../assert/images/image 20.jpg";
+import garden1 from "../../assert/images/image 8.jpg";
+import garden2 from "../../assert/images/thinkstockphotos-185539853_1.jpg";
 
 function Slider() {
   return (

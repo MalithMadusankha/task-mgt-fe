@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { GetFirebaseID, SignIn } from "../../auth/service";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import axios from "axios";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 export default function CustomerRegister() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,10 @@ export default function CustomerRegister() {
 
   const getUser = async (id) => {
     try {
-      const res = await axios.get("http://localhost:5000/user/firebase/" + id);
+      const res = await axios.get(
+        "http://localhost:5000/user/firebase/" + id,
+        AuthHeader()
+      );
       console.log("res :", res.data);
       const type = res.data[0].type;
       localStorage.setItem("userType", type);

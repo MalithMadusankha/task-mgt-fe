@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 export default function EditTask() {
   const location = useLocation();
@@ -18,7 +19,7 @@ export default function EditTask() {
 
   const getTask = () => {
     axios
-      .get("http://localhost:5000/Task/" + id)
+      .get("http://localhost:5000/Task/" + id, AuthHeader())
       .then((response) => {
         setTid(response.data.Tid);
         setTaskname(response.data.Taskname);
@@ -78,15 +79,17 @@ export default function EditTask() {
 
     console.log(Task);
 
-    axios.post("http://localhost:5000/Task/update/" + id, Task).then((res) => {
-      console.log(res.data);
-      alert("Update Task");
-    });
+    axios
+      .post("http://localhost:5000/Task/update/" + id, Task, AuthHeader())
+      .then((res) => {
+        console.log(res.data);
+        alert("Update Task");
+      });
   };
 
   useEffect(() => {
     getTask();
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <div className="container mb-5">

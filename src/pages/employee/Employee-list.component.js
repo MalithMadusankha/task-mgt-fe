@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Button } from "react-bootstrap";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 const Employee = (props) => (
   <tr>
@@ -44,7 +45,7 @@ export default class EmployeeList extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:5000/user/type/EMPLOYEE")
+      .get("http://localhost:5000/user/type/EMPLOYEE", AuthHeader())
       .then((response) => {
         console.log("emp :", response.data);
         this.setState({ Employee: response.data });
@@ -56,9 +57,11 @@ export default class EmployeeList extends Component {
 
   deleteEmployee(id) {
     if (window.confirm("Are you sure?")) {
-      axios.delete("http://localhost:5000/user/" + id).then((response) => {
-        console.log(response.data);
-      });
+      axios
+        .delete("http://localhost:5000/user/" + id, AuthHeader())
+        .then((response) => {
+          console.log(response.data);
+        });
 
       this.setState({
         Employee: this.state.Employee.filter((el) => el._id !== id),
@@ -87,14 +90,16 @@ export default class EmployeeList extends Component {
   handleSearchArea = (e) => {
     const searchKey = e.currentTarget.value;
 
-    axios.get("http://localhost:5000/user/type/EMPLOYEE").then((response) => {
-      const resultt = response.data;
-      const result = resultt.filter((props) =>
-        props.username.includes(searchKey)
-      );
+    axios
+      .get("http://localhost:5000/user/type/EMPLOYEE", AuthHeader())
+      .then((response) => {
+        const resultt = response.data;
+        const result = resultt.filter((props) =>
+          props.username.includes(searchKey)
+        );
 
-      this.setState({ Employee: result });
-    });
+        this.setState({ Employee: result });
+      });
   };
 
   render() {
@@ -156,17 +161,16 @@ export default class EmployeeList extends Component {
               ))}
             </tbody>
           ) : null}
-
-          <br></br>
-          <Link className="mx-3" to="/admin/Employee/add/">
-            <Button variant="primary">New Employee</Button>
-          </Link>
-
-          <Link to="/EmpReport">
-            <Button variant="primary">Generate Report</Button>
-          </Link>
-          <br></br>
         </table>
+        <br></br>
+        <Link className="mx-3" to="/admin/Employee/add/">
+          <Button variant="primary">New Employee</Button>
+        </Link>
+
+        <Link to="/EmpReport">
+          <Button variant="primary">Generate Report</Button>
+        </Link>
+        <br></br>
       </div>
     );
   }

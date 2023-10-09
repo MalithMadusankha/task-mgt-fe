@@ -4,6 +4,7 @@ import axios from "axios";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 export default function CustomerRegister() {
   const [name, setName] = useState("");
@@ -44,7 +45,11 @@ export default function CustomerRegister() {
         };
         console.log("newUser :", newUser);
 
-        const res = await axios.post("http://localhost:5000/user/add", newUser);
+        const res = await axios.post(
+          "http://localhost:5000/user/add",
+          newUser,
+          AuthHeader()
+        );
         if (res.data.status === 200) {
           window.location = "/Login";
         }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-//import validator from 'validator'
+import { AuthHeader } from "../../auth/AuthHeader";
 
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
@@ -97,7 +97,7 @@ export default class CreateCustomer extends Component {
     console.log(Customer);
 
     axios
-      .post("http://localhost:5000/user/add", Customer)
+      .post("http://localhost:5000/user/add", Customer, AuthHeader())
       .then((res) => console.log(res.data))
       .then(() => alert("Success Fully added "));
   }
@@ -151,7 +151,7 @@ export default class CreateCustomer extends Component {
               type="text"
               required
               className="form-control"
-              maxlength="10"
+              maxLength="10"
               name="Phone"
               placeholder="Enter Phone"
               value={this.state.phone}

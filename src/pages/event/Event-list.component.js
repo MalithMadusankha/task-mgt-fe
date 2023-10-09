@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Button } from "react-bootstrap";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 export default function EventList() {
   const location = useLocation();
@@ -11,9 +12,11 @@ export default function EventList() {
 
   const deleteEvent = (id) => {
     if (window.confirm("Are you sure?")) {
-      axios.delete("http://localhost:5000/event/" + id).then((response) => {
-        console.log(response.data);
-      });
+      axios
+        .delete("http://localhost:5000/event/" + id, AuthHeader)
+        .then((response) => {
+          console.log(response.data);
+        });
 
       setEvent(Event.filter((el) => el._id !== id));
     }
@@ -31,7 +34,7 @@ export default function EventList() {
   const handleSearchArea = (e) => {
     const searchKey = e.currentTarget.value;
 
-    axios.get("http://localhost:5000/event/").then((response) => {
+    axios.get("http://localhost:5000/event/", AuthHeader()).then((response) => {
       const resultt = response.data;
       const result = resultt.filter(
         (props) =>
@@ -46,7 +49,7 @@ export default function EventList() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/event/")
+      .get("http://localhost:5000/event/", AuthHeader())
       .then((response) => {
         console.log("response", response.data);
         setEvent(response.data);
@@ -54,7 +57,7 @@ export default function EventList() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <div className="m-3">

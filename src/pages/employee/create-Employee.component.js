@@ -3,6 +3,7 @@ import axios from "axios";
 
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 export default class CreateEmployee extends Component {
   constructor(props) {
@@ -111,10 +112,12 @@ export default class CreateEmployee extends Component {
 
     console.log(Employee);
 
-    axios.post("http://localhost:5000/user/add", Employee).then((res) => {
-      console.log(res.data);
-      alert("Success fully Add New employee");
-    });
+    axios
+      .post("http://localhost:5000/user/add", Employee, AuthHeader())
+      .then((res) => {
+        console.log(res.data);
+        alert("Success fully Add New employee");
+      });
   }
 
   render() {
@@ -176,7 +179,7 @@ export default class CreateEmployee extends Component {
               type="text"
               required
               className="form-control"
-              maxlength="10"
+              maxLength="10"
               name="Phone"
               placeholder="Enter Phone"
               value={this.state.phone}

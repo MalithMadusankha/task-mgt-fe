@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 function Contactus() {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState("");
+
+  const sendEmail = () => {
+    const Email = {
+      to: email,
+      subject: "Contact Us From " + name,
+      text: `${message}, My contact number is ${phone}`,
+    };
+
+    console.log("email det : ", Email);
+
+    axios.post("http://localhost:5000/Email/send", Email).then((res) => {
+      console.log(res.data);
+      alert("Successfully Sent Email ");
+    });
+  };
+
   return (
     <div className="container mb-5">
       <section className="py-4 ">
@@ -27,6 +48,9 @@ function Contactus() {
                       type="text"
                       className="form-control"
                       placeholder="Enter Full Name"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
                   </div>
 
@@ -36,6 +60,9 @@ function Contactus() {
                       type="text"
                       className="form-control"
                       placeholder="Enter Phone Number"
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
                     />
                   </div>
 
@@ -45,6 +72,9 @@ function Contactus() {
                       type="text"
                       className="form-control"
                       placeholder="Enter Email Address"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
 
@@ -54,6 +84,9 @@ function Contactus() {
                       rows="3"
                       className="form-control"
                       placeholder="Type Your Message..."
+                      required
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
                     ></textarea>
                   </div>
 
@@ -61,6 +94,7 @@ function Contactus() {
                     <button
                       type="button"
                       className="btn btn-primary shadow w-100"
+                      onClick={sendEmail}
                     >
                       Send Message
                     </button>

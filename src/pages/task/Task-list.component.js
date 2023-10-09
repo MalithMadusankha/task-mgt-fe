@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Button } from "react-bootstrap";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 export default function TaskList() {
   const location = useLocation();
@@ -10,9 +11,11 @@ export default function TaskList() {
 
   const deleteTask = (id) => {
     if (window.confirm("Are you sure?")) {
-      axios.delete("http://localhost:5000/Task/" + id).then((response) => {
-        console.log(response.data);
-      });
+      axios
+        .delete("http://localhost:5000/Task/" + id, AuthHeader())
+        .then((response) => {
+          console.log(response.data);
+        });
 
       setTask(Task.filter((el) => el._id !== id));
     }
@@ -21,7 +24,7 @@ export default function TaskList() {
   const handleSearchArea = (e) => {
     const searchKey = e.currentTarget.value;
 
-    axios.get("http://localhost:5000/Task/").then((response) => {
+    axios.get("http://localhost:5000/Task/", AuthHeader()).then((response) => {
       const resultt = response.data;
       const result = resultt.filter((props) =>
         props.Taskname.includes(searchKey)
@@ -33,14 +36,14 @@ export default function TaskList() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/Task/")
+      .get("http://localhost:5000/Task/", AuthHeader())
       .then((response) => {
         setTask(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <div className="m-3">
@@ -64,7 +67,7 @@ export default function TaskList() {
       <table className="table">
         <thead className="thead-light">
           <tr>
-            <th> Task ID </th>
+            <th style={{ width: 100 }}> Task ID </th>
             <th> Task Name </th>
             <th> Task Category </th>
             <th> Modified </th>
@@ -105,22 +108,17 @@ export default function TaskList() {
           ))}
         </tbody>
         <br></br>
-
-        {layout === "admin" ? (
-          <>
-            <Link to="/admin/Task/add">
-              <Button variant="primary">New Task </Button>
-            </Link>
-            <Link to="/ReportTask/">
-              <Button variant="primary">Generate Report </Button>
-            </Link>
-          </>
-        ) : null}
-
-        <br></br>
       </table>
-
-      <div style={{ float: "right" }}></div>
+      {layout === "admin" ? (
+        <>
+          <Link to="/admin/Task/add">
+            <Button variant="primary">New Task </Button>
+          </Link>
+          <Link className="mx-2" to="/ReportTask/">
+            <Button variant="primary">Generate Report </Button>
+          </Link>
+        </>
+      ) : null}
     </div>
   );
 }

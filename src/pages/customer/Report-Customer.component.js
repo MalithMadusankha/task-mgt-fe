@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import jsPDF from "jspdf";
+import { AuthHeader } from "../../auth/AuthHeader";
 
 const Customer = (props) => (
   <tr>
@@ -24,7 +25,7 @@ export default class CustomerList extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:5000/Customer/")
+      .get("http://localhost:5000/Customer/", AuthHeader())
       .then((response) => {
         this.setState({ Customer: response.data });
       })
