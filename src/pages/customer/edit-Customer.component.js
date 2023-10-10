@@ -85,7 +85,7 @@ export default function EditCustomer() {
     console.log(Customer);
 
     axios
-      .post("http://localhost:5000/user/update/" + id, Customer, AuthHeader())
+      .put("http://localhost:5000/user/update/" + id, Customer, AuthHeader())
       .then((res) => {
         console.log(res.data);
         alert("Successfully updated ");

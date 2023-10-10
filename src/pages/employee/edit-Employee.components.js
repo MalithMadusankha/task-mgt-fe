@@ -93,7 +93,7 @@ export default function EditETask() {
     console.log(Employee);
 
     axios
-      .post("http://localhost:5000/user/update/" + id, Employee, AuthHeader())
+      .put("http://localhost:5000/user/update/" + id, Employee, AuthHeader())
       .then((res) => {
         console.log(res.data);
         alert("Updated Successfully");

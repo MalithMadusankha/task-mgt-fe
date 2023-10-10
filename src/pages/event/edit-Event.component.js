@@ -99,7 +99,7 @@ export default function EditEvent() {
     console.log(Event);
 
     axios
-      .post("http://localhost:5000/event/update/" + id, Event, AuthHeader())
+      .put("http://localhost:5000/event/update/" + id, Event, AuthHeader())
       .then((res) => {
         console.log(res.data);
         alert("Successfully updated ");

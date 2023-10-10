@@ -25,7 +25,7 @@ export default class CustomerList extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:5000/Customer/", AuthHeader())
+      .get("http://localhost:5000/user/type/CUSTOMER", AuthHeader())
       .then((response) => {
         this.setState({ Customer: response.data });
       })
@@ -36,7 +36,7 @@ export default class CustomerList extends Component {
 
   getPosts() {
     axios
-      .get("http://localhost:5000/Customer/")
+      .get("http://localhost:5000/user/type/CUSTOMER")
       .then((response) => {
         this.setState({ Customer: response.data });
       })
@@ -47,9 +47,11 @@ export default class CustomerList extends Component {
 
   deleteCustomer(id) {
     if (window.confirm("Are you sure?")) {
-      axios.delete("http://localhost:5000/Customer/" + id).then((response) => {
-        console.log(response.data);
-      });
+      axios
+        .delete("http://localhost:5000/user/type/CUSTOMER" + id)
+        .then((response) => {
+          console.log(response.data);
+        });
 
       this.setState({
         Customer: this.state.Customer.filter((el) => el._id !== id),
@@ -79,7 +81,7 @@ export default class CustomerList extends Component {
   handleSearchArea = (e) => {
     const searchKey = e.currentTarget.value;
 
-    axios.get("http://localhost:5000/Customer/").then((response) => {
+    axios.get("http://localhost:5000/user/type/CUSTOMER").then((response) => {
       const resultt = response.data;
       const result = resultt.filter((props) =>
         props.username.includes(searchKey)
@@ -100,7 +102,7 @@ export default class CustomerList extends Component {
   render() {
     return (
       <div className="container">
-        <div id="content" style={{ width: 400, marginleft: 10 }}>
+        <div id="content" style={{ marginleft: 10 }}>
           <div className="row">
             <div className="col-lg-9 mt-2 mb-2">
               <b>
@@ -120,10 +122,12 @@ export default class CustomerList extends Component {
             <tbody>
               {this.state.Customer.map((props) => (
                 <tr key={props.id}>
-                  <td> {props.Cid} </td> <td> {props.username} </td>
-                  <td> {props.Address} </td> <td> {props.Phone} </td>
+                  <td className="m-0 p-0"> {props.userId} </td>
+                  <td> {props.username} </td>
+                  <td> {props.address} </td>
+                  <td> {props.phone} </td>
                   <td> {props.birthday.substring(0, 10)} </td>
-                  <td> {props.Email} </td>
+                  <td> {props.email} </td>
                 </tr>
               ))}
             </tbody>
@@ -134,11 +138,15 @@ export default class CustomerList extends Component {
             <br></br>
           </table>
         </div>
-        <div style={{ float: "right" }}>/</div>
 
-        <button onClick={this.generatePDF} type="primary">
+        <Button
+          className="mb-5"
+          variant="info"
+          onClick={this.generatePDF}
+          type="primary"
+        >
           Generate PDF
-        </button>
+        </Button>
       </div>
     );
   }

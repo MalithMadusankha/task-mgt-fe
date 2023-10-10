@@ -7,11 +7,11 @@ import { AuthHeader } from "../../auth/AuthHeader";
 
 const Employee = (props) => (
   <tr>
-    <td> {props.Employee.Eid} </td> <td> {props.Employee.username} </td>{" "}
-    <td> {props.Employee.Address} </td> <td> {props.Employee.Phone} </td>{" "}
-    <td> {props.Employee.birthday.substring(0, 10)} </td>{" "}
-    <td> {props.Employee.Position} </td> <td> {props.Employee.Gender} </td>{" "}
-    <td></td>{" "}
+    <td> {props.Employee.Eid} </td> <td> {props.Employee.username} </td>
+    <td> {props.Employee.Address} </td> <td> {props.Employee.Phone} </td>
+    <td> {props.Employee.birthday.substring(0, 10)} </td>
+    <td> {props.Employee.Position} </td> <td> {props.Employee.Gender} </td>
+    <td></td>
   </tr>
 );
 
@@ -26,7 +26,7 @@ export default class EmployeeList extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:5000/Employee/", AuthHeader())
+      .get("http://localhost:5000/user/type/EMPLOYEE", AuthHeader())
       .then((response) => {
         this.setState({ Employee: response.data });
       })
@@ -37,7 +37,7 @@ export default class EmployeeList extends Component {
 
   getPosts() {
     axios
-      .get("http://localhost:5000/Employee/", AuthHeader())
+      .get("http://localhost:5000/user/type/EMPLOYEE", AuthHeader())
       .then((response) => {
         this.setState({ Employee: response.data });
       })
@@ -49,7 +49,7 @@ export default class EmployeeList extends Component {
   deleteEmployee(id) {
     if (window.confirm("Are you sure?")) {
       axios
-        .delete("http://localhost:5000/Employee/" + id, AuthHeader)
+        .delete("http://localhost:5000/user/type/EMPLOYEE" + id, AuthHeader)
         .then((response) => {
           console.log(response.data);
         });
@@ -82,7 +82,7 @@ export default class EmployeeList extends Component {
     const searchKey = e.currentTarget.value;
 
     axios
-      .get("http://localhost:5000/Employee/", AuthHeader())
+      .get("http://localhost:5000/user/type/EMPLOYEE", AuthHeader())
       .then((response) => {
         const resultt = response.data;
         const result = resultt.filter((props) =>
@@ -105,30 +105,33 @@ export default class EmployeeList extends Component {
   render() {
     return (
       <div className="container">
-        <div id="content" style={{ width: 400, marginleft: 10 }}>
+        <div id="content" style={{ marginleft: 10 }}>
           <div className="row">
             <div className="col-lg-9 mt-2 mb-2">
-              <h4> Report of Employees </h4>{" "}
-            </div>{" "}
-            <div className="col-lg-3 mt-2 mb-2"></div>{" "}
+              <h4> Report of Employees </h4>
+            </div>
+            <div className="col-lg-3 mt-2 mb-2"></div>
           </div>
 
           <table className="table">
             <thead className="thead-light">
               <tr>
-                <th> Employee ID </th> <th> Employee Name </th>{" "}
-                <th> Address </th> <th> Phone </th> <th> Birthday </th>{" "}
-                <th> Position </th> <th> Gender </th>{" "}
-              </tr>{" "}
-            </thead>{" "}
+                <th> Employee ID </th> <th> Employee Name </th>
+                <th> Address </th> <th> Phone </th> <th> Birthday </th>
+                <th> Position </th> <th> Gender </th>
+              </tr>
+            </thead>
             <tbody>
-              {" "}
-              {this.state.Employee.map((props) => (
-                <tr key={props.id}>
-                  <td> {props.Eid} </td> <td> {props.username} </td>{" "}
-                  <td> {props.Address} </td> <td> {props.Phone} </td>{" "}
-                  <td> {props.birthday.substring(0, 10)} </td>{" "}
-                  <td> {props.Position} </td> <td> {props.Gender} </td>
+              {this.state.Employee.map((emp) => (
+                <tr key={emp.id}>
+                  <td> {emp?.userId} </td>
+                  <td> {emp?.username} </td>
+                  <td> {emp?.address} </td>
+                  <td> {emp?.phone} </td>
+                  <td> {emp?.birthday.substring(0, 10)} </td>
+                  <td> {emp?.email} </td>
+                  <td> {emp?.position} </td>
+                  <td> {emp?.gender} </td>
                 </tr>
               ))}
             </tbody>
@@ -142,10 +145,14 @@ export default class EmployeeList extends Component {
 
         <div style={{ float: "right" }}></div>
 
-        <button onClick={this.generatePDF} type="primary">
-          {" "}
-          Generate PDF{" "}
-        </button>
+        <Button
+          className="mb-5"
+          variant="info"
+          onClick={this.generatePDF}
+          type="primary"
+        >
+          Generate PDF
+        </Button>
       </div>
     );
   }

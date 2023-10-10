@@ -80,7 +80,7 @@ export default function EditTask() {
     console.log(Task);
 
     axios
-      .post("http://localhost:5000/Task/update/" + id, Task, AuthHeader())
+      .put("http://localhost:5000/Task/update/" + id, Task, AuthHeader())
       .then((res) => {
         console.log(res.data);
         alert("Update Task");

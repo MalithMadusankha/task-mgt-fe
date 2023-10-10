@@ -114,7 +114,7 @@ export default function TaskList() {
           <Link to="/admin/Task/add">
             <Button variant="primary">New Task </Button>
           </Link>
-          <Link className="mx-2" to="/ReportTask/">
+          <Link className="mx-2" to="/admin/ReportTask/">
             <Button variant="primary">Generate Report </Button>
           </Link>
         </>

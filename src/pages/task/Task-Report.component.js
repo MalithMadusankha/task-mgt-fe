@@ -104,7 +104,7 @@ export default class TaskList extends Component {
   render() {
     return (
       <div className="container">
-        <div id="content" style={{ width: 400, marginleft: 10 }}>
+        <div id="content" style={{ marginleft: 10 }}>
           <div className="row">
             <div className="col-lg-9 mt-2 mb-2">
               <b>
@@ -126,7 +126,6 @@ export default class TaskList extends Component {
               </tr>
             </thead>
             <tbody>
-              {" "}
               {this.state.Task.map((props) => (
                 <tr key={props.id}>
                   <td> {props.Tid} </td>
@@ -149,10 +148,14 @@ export default class TaskList extends Component {
         </div>
 
         <div style={{ float: "right" }}></div>
-        <button onClick={this.generatePDF} type="primary">
-          {" "}
-          Generate PDF{" "}
-        </button>
+        <Button
+          className="mb-5"
+          variant="info"
+          onClick={this.generatePDF}
+          type="primary"
+        >
+          Generate PDF
+        </Button>
       </div>
     );
   }

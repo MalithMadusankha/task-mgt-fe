@@ -167,7 +167,7 @@ export default class EmployeeList extends Component {
           <Button variant="primary">New Employee</Button>
         </Link>
 
-        <Link to="/EmpReport">
+        <Link to="/admin/EmpReport">
           <Button variant="primary">Generate Report</Button>
         </Link>
         <br></br>
